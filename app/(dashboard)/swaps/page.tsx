@@ -3,13 +3,12 @@ import { cookies } from "next/headers"
 import { SwapBoard } from "@/components/swaps/SwapBoard"
 import type { MA, SwapRequest } from "@/types"
 
-function getSessionMaId(): Promise<string | null> {
-  return cookies().then((store) => {
-    const value = store.get("nextlevel_session")?.value
-    if (!value) return null
-    const [maId] = value.split(":")
-    return maId || null
-  })
+async function getSessionMaId(): Promise<string | null> {
+  const store = await cookies()
+  const value = store.get("nextlevel_session")?.value
+  if (!value) return null
+  const [maId] = value.split(":")
+  return maId || null
 }
 
 export default async function SwapsPage() {
