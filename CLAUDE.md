@@ -65,3 +65,5 @@ Last updated: 2026-04-05
 - 2026-04-05 — Built Monthly Schedule Grid (/schedule)
 - 2026-04-05 — Built Auto Staffing Status (lib/staffing.ts, applied to /schedule + /admin)
 - 2026-04-05 — Built Swap Request Board (/swaps) with post + accept + close flow
+- 2026-04-05 — Built Passcode Login (/setup route added for dev seeding)
+- 2026-04-05 — [PIPELINE IMPROVEMENT] Added /setup page (no auth) for initial data seeding — avoids chicken-and-egg problem when previewing apps with login gating
