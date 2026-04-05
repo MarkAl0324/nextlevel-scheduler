@@ -1,57 +1,41 @@
-import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
-// Routes that require the user to be logged in
-const PROTECTED_ROUTES = ["/dashboard"]
+const PROTECTED = ["/schedule", "/swaps", "/admin"]
 
-// Routes that logged-in users should not see (e.g. login page)
-const AUTH_ROUTES = ["/login", "/register"]
+function getCurrentMonth() {
+  const now = new Date()
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`
+}
 
-export async function middleware(request: NextRequest) {
-  const pathname = request.nextUrl.pathname
+function getSession(request: NextRequest): { maId: string; month: string } | null {
+  const value = request.cookies.get("nextlevel_session")?.value
+  if (!value) return null
+  const [maId, month] = value.split(":")
+  if (!maId || !month) return null
+  return { maId, month }
+}
 
-  // If Supabase is not configured yet, pass through all requests.
-  // This keeps the template deployable before a Supabase project is attached.
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  if (!supabaseUrl || !supabaseKey) {
-    return NextResponse.next({ request })
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const session = getSession(request)
+  const currentMonth = getCurrentMonth()
+  const isValid = session !== null && session.month === currentMonth
+
+  // Redirect authenticated users away from login page
+  if (pathname === "/" && isValid) {
+    return NextResponse.redirect(new URL("/schedule", request.url))
   }
 
-  let supabaseResponse = NextResponse.next({ request })
-
-  const supabase = createServerClient(supabaseUrl, supabaseKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll()
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) =>
-          request.cookies.set(name, value)
-        )
-        supabaseResponse = NextResponse.next({ request })
-        cookiesToSet.forEach(({ name, value, options }) =>
-          supabaseResponse.cookies.set(name, value, options)
-        )
-      },
-    },
-  })
-
-  const { data: { user } } = await supabase.auth.getUser()
-
-  // Redirect unauthenticated users away from protected routes
-  if (!user && PROTECTED_ROUTES.some((r) => pathname.startsWith(r))) {
-    return NextResponse.redirect(new URL("/login", request.url))
+  // Protect dashboard routes
+  if (PROTECTED.some((r) => pathname.startsWith(r))) {
+    if (!isValid) {
+      return NextResponse.redirect(new URL("/", request.url))
+    }
   }
 
-  // Redirect authenticated users away from auth routes
-  if (user && AUTH_ROUTES.some((r) => pathname.startsWith(r))) {
-    return NextResponse.redirect(new URL("/dashboard", request.url))
-  }
-
-  return supabaseResponse
+  return NextResponse.next()
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 }
