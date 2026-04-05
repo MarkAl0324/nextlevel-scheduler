@@ -33,7 +33,7 @@ export function Sidebar({ items }: SidebarProps) {
 
       <div className="h-px bg-[#CCCACB] mb-4" />
 
-      <nav className="flex flex-col gap-1">
+      <nav className="flex flex-col gap-1 flex-1">
         {items.map((item) => (
           <Link
             key={item.href}
@@ -50,6 +50,16 @@ export function Sidebar({ items }: SidebarProps) {
           </Link>
         ))}
       </nav>
+
+      <div className="h-px bg-[#CCCACB] my-4" />
+
+      <button
+        onClick={handleLock}
+        className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-[#4E545B] hover:bg-[#066880]/5 hover:text-[#066880] transition-colors w-full"
+      >
+        <LogOut className="h-4 w-4 shrink-0" />
+        Lock
+      </button>
     </aside>
   )
 }
