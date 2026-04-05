@@ -33,7 +33,7 @@ function formatDate(dateStr: string) {
   return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", weekday: "long" })
 }
 
-export function SwapBoard({ mas, initialSwaps }: Props) {
+export function SwapBoard({ mas, initialSwaps, sessionMaId }: Props) {
   const [swaps, setSwaps] = useState<SwapRequest[]>(initialSwaps)
   const [viewerMaId, setViewerMaId] = useState<string>("")
   const [showModal, setShowModal] = useState(false)
