@@ -23,9 +23,15 @@ export default async function LoginPage() {
         {/* Card */}
         <div className="bg-white rounded-2xl border border-[#CCCACB] shadow-sm p-8">
           {(mas ?? []).length === 0 ? (
-            <p className="text-center text-sm text-[#7A7A7A]">
-              No staff found. Ask your manager to add MAs first.
-            </p>
+            <div className="text-center space-y-3">
+              <p className="text-sm text-[#7A7A7A]">No staff set up yet.</p>
+              <a
+                href="/setup"
+                className="inline-block px-4 py-2 rounded-2xl bg-[#066880] text-white text-sm font-semibold hover:bg-[#055570] transition-colors"
+              >
+                Go to Setup →
+              </a>
+            </div>
           ) : (
             <LoginForm mas={(mas ?? []) as MA[]} />
           )}
