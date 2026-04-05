@@ -7,6 +7,7 @@ import type { MA, SwapRequest } from "@/types"
 type Props = {
   mas: MA[]
   initialSwaps: SwapRequest[]
+  sessionMaId?: string // provided once login is active; hides the "Viewing as" selector
 }
 
 const STORAGE_KEY = "nextlevel_viewer_ma_id"
