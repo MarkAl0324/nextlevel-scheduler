@@ -155,20 +155,22 @@ export function SwapBoard({ mas, initialSwaps, sessionMaId }: Props) {
         </button>
       </div>
 
-      {/* Viewing as selector */}
-      <div className="flex items-center gap-3 p-3 rounded-xl border border-[#CCCACB] bg-[#FFFEF9] text-sm">
-        <span className="text-[#7A7A7A]">Viewing as:</span>
-        <select
-          value={viewerMaId}
-          onChange={(e) => handleViewerChange(e.target.value)}
-          className="border border-[#CCCACB] rounded-lg px-3 py-1 bg-white text-[#1A1618] focus:outline-none focus:ring-2 focus:ring-[#066880]"
-        >
-          {mas.map((ma) => (
-            <option key={ma.id} value={ma.id}>{ma.name}</option>
-          ))}
-        </select>
-        <span className="text-[#7A7A7A] text-xs">(Temporary — replaced by login in a future update)</span>
-      </div>
+      {/* Viewing as selector — only shown before passcode login is active */}
+      {!sessionMaId && (
+        <div className="flex items-center gap-3 p-3 rounded-xl border border-[#CCCACB] bg-[#FFFEF9] text-sm">
+          <span className="text-[#7A7A7A]">Viewing as:</span>
+          <select
+            value={viewerMaId}
+            onChange={(e) => handleViewerChange(e.target.value)}
+            className="border border-[#CCCACB] rounded-lg px-3 py-1 bg-white text-[#1A1618] focus:outline-none focus:ring-2 focus:ring-[#066880]"
+          >
+            {mas.map((ma) => (
+              <option key={ma.id} value={ma.id}>{ma.name}</option>
+            ))}
+          </select>
+          <span className="text-[#7A7A7A] text-xs">(Temporary — replaced by login in a future update)</span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         {/* Open Requests */}
