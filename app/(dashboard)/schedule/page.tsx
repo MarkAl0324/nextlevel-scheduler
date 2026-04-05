@@ -25,7 +25,7 @@ export default async function SchedulePage({ searchParams }: Props) {
   const lastDay = new Date(year, m, 0).getDate()
   const endDate = `${month}-${String(lastDay).padStart(2, "0")}`
 
-  const supabase = createServerClient()
+  const supabase = await createClient()
 
   const [{ data: mas }, { data: providers }, { data: entries }] = await Promise.all([
     supabase.from("mas").select("*").eq("active", true).order("name"),
