@@ -18,7 +18,7 @@
 | 3 | Monthly schedule grid (view) | ✅ Done |
 | 4 | Auto staffing status per day | ✅ Done |
 | 5 | Swap request board | ✅ Done |
-| 6 | Passcode login | ⬜ Last — no users yet |
+| 6 | Passcode login | ✅ Done |
 
 ---
 
