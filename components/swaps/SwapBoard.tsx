@@ -46,8 +46,13 @@ export function SwapBoard({ mas, initialSwaps, sessionMaId }: Props) {
   const [formType, setFormType] = useState<SwapRequest["swap_type"]>("1:1")
   const [formNote, setFormNote] = useState("")
 
-  // Restore viewer MA from localStorage
+  // If session MA is provided (login active), use it directly.
+  // Otherwise fall back to localStorage for the pre-auth "Viewing as" flow.
   useEffect(() => {
+    if (sessionMaId) {
+      setViewerMaId(sessionMaId)
+      return
+    }
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored && mas.find((m) => m.id === stored)) {
       setViewerMaId(stored)
@@ -55,7 +60,7 @@ export function SwapBoard({ mas, initialSwaps, sessionMaId }: Props) {
       setViewerMaId(mas[0].id)
       localStorage.setItem(STORAGE_KEY, mas[0].id)
     }
-  }, [mas])
+  }, [mas, sessionMaId])
 
   function handleViewerChange(id: string) {
     setViewerMaId(id)
