@@ -107,7 +107,39 @@
 
 ---
 
-## Feature 6: Passcode Login — NEXT
+## Feature 6: Passcode Login — COMPLETE ✅
+
+| File | Notes |
+|------|-------|
+| `app/page.tsx` | Login page — MA selector + passcode input, no sidebar |
+| `components/auth/LoginForm.tsx` | Client form, posts to /api/auth |
+| `app/api/auth/route.ts` | POST: validates passcode vs DB, sets session cookie |
+| `app/api/auth/logout/route.ts` | POST: clears session cookie |
+| `app/api/passcode/route.ts` | GET + POST (upsert) passcodes table |
+| `app/(dashboard)/admin/passcode/page.tsx` | Manage monthly passcode |
+| `components/admin/PasscodeManager.tsx` | Client form to set/update passcode |
+| `middleware.ts` | Replaced Supabase auth with session cookie check |
+| `components/layout/Sidebar.tsx` | Added Lock button at bottom |
+| `app/(dashboard)/layout.tsx` | Added Passcode nav item |
+| `app/(dashboard)/swaps/page.tsx` | Reads session MA, passes to SwapBoard |
+| `components/swaps/SwapBoard.tsx` | Hides "Viewing as" when sessionMaId present |
+
+### Template cleanup done
+- Deleted `app/(auth)/login/page.tsx`
+- Deleted `app/(auth)/register/page.tsx`
+- Deleted `app/(dashboard)/dashboard/page.tsx`
+- Replaced `app/page.tsx` (template homepage → passcode login)
+- Replaced `middleware.ts` (Supabase auth → session cookie)
+
+### Key decisions
+- Session cookie: `nextlevel_session = ma_id:month` (httpOnly, sameSite: lax)
+- Middleware validates cookie AND checks month = current month (auto-expires each month)
+- "Viewing as" selector hidden once session is active; falls back to localStorage pre-auth
+- Passcode page at /admin/passcode — upserts by valid_month (one code per month)
+
+---
+
+## BUILD COMPLETE ✅
 
 ### What it will do
 Read-only view at `/schedule`. MAs see which provider they're paired with each day of the month. Month navigation (prev/next arrows + dropdown).
