@@ -4,8 +4,7 @@
 ---
 
 ## Current Status
-**Phase:** Feature build — Passcode Login (next)
-**Next session starts at:** Feature 6 — passcode login + template cleanup
+**Phase:** COMPLETE — all 6 features built. Ready for /review and /deploy.
 
 ---
 
