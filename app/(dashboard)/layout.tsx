@@ -1,3 +1,5 @@
+"use client"
+
 import { Sidebar } from "@/components/layout/Sidebar"
 import { ROUTES } from "@/lib/constants"
 import { CalendarDays, ArrowLeftRight, Settings, KeyRound } from "lucide-react"
