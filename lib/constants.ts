@@ -14,4 +14,5 @@ export const ROUTES = {
   admin: "/admin",
   adminMas: "/admin/mas",
   adminProviders: "/admin/providers",
+  adminPasscode: "/admin/passcode",
 } as const
