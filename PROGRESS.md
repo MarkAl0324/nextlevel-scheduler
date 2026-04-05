@@ -4,8 +4,8 @@
 ---
 
 ## Current Status
-**Phase:** Feature build — Swap Request Board (next)
-**Next session starts at:** Feature 5 — `/swaps`
+**Phase:** Feature build — Passcode Login (next)
+**Next session starts at:** Feature 6 — passcode login + template cleanup
 
 ---
 
