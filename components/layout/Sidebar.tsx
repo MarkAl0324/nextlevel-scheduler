@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { APP_NAME } from "@/lib/constants"
 import type { NavItem } from "@/types"
 
 type SidebarProps = {
@@ -12,21 +13,32 @@ type SidebarProps = {
 export function Sidebar({ items }: SidebarProps) {
   const pathname = usePathname()
 
+  function isActive(href: string) {
+    return pathname === href || pathname.startsWith(href + "/")
+  }
+
   return (
-    <aside className="flex w-64 flex-col border-r bg-background px-4 py-6">
+    <aside className="flex w-64 flex-col border-r border-[#CCCACB] bg-[#FFFEF9] px-4 py-6 shrink-0">
+      {/* Logo */}
+      <div className="px-3 mb-6">
+        <span className="text-base font-bold text-[#066880]">{APP_NAME}</span>
+      </div>
+
+      <div className="h-px bg-[#CCCACB] mb-4" />
+
       <nav className="flex flex-col gap-1">
         {items.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-              pathname === item.href
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              isActive(item.href)
+                ? "border-l-2 border-[#066880] text-[#066880] bg-[#066880]/5 pl-[10px]"
+                : "text-[#4E545B] hover:bg-[#066880]/5 hover:text-[#066880]"
             )}
           >
-            {item.icon && <item.icon className="h-4 w-4" />}
+            {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
             {item.label}
           </Link>
         ))}
