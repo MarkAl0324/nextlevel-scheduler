@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server"
 
 const PROTECTED = ["/schedule", "/swaps", "/admin"]
+const UNPROTECTED = ["/", "/setup"] // explicitly never redirect these
 
 function getCurrentMonth() {
   const now = new Date()
