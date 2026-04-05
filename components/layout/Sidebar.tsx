@@ -13,6 +13,12 @@ type SidebarProps = {
 
 export function Sidebar({ items }: SidebarProps) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  async function handleLock() {
+    await fetch("/api/auth/logout", { method: "POST" })
+    router.push("/")
+  }
 
   function isActive(href: string) {
     return pathname === href || pathname.startsWith(href + "/")
