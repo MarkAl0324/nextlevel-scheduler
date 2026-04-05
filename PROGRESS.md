@@ -17,7 +17,7 @@
 | 2 | Staff admin: build/edit schedule | ✅ Done |
 | 3 | Monthly schedule grid (view) | ✅ Done |
 | 4 | Auto staffing status per day | ✅ Done |
-| 5 | Swap request board | ⬜ Not started |
+| 5 | Swap request board | ✅ Done |
 | 6 | Passcode login | ⬜ Last — no users yet |
 
 ---
