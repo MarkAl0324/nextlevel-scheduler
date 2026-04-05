@@ -64,3 +64,4 @@ Last updated: 2026-04-05
 - 2026-04-05 — Built Staff Admin schedule builder (/admin)
 - 2026-04-05 — Built Monthly Schedule Grid (/schedule)
 - 2026-04-05 — Built Auto Staffing Status (lib/staffing.ts, applied to /schedule + /admin)
+- 2026-04-05 — Built Swap Request Board (/swaps) with post + accept + close flow
