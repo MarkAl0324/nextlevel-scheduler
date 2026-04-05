@@ -89,7 +89,25 @@
 
 ---
 
-## Feature 5: Swap Request Board — NEXT
+## Feature 5: Swap Request Board — COMPLETE ✅
+
+| File | Notes |
+|------|-------|
+| `app/api/swaps/route.ts` | GET (all requests desc) + POST (create) |
+| `app/api/swaps/[id]/route.ts` | PATCH action: "accept" or "close" |
+| `app/(dashboard)/swaps/page.tsx` | Server component — loads MAs + swaps |
+| `components/swaps/SwapBoard.tsx` | Client — board layout, modal, accept/close |
+
+### Key decisions made
+- "Viewing as" MA selector stored in localStorage — replaced by session in Feature 6
+- Accept does NOT auto-modify schedule — manager applies change in /admin
+- Open requests = all open requests excluding own; My requests = own
+- SwapCard extracted as local component (used in both sections)
+- Bug fixed: schedule/page.tsx was importing `createServerClient` instead of `createClient`
+
+---
+
+## Feature 6: Passcode Login — NEXT
 
 ### What it will do
 Read-only view at `/schedule`. MAs see which provider they're paired with each day of the month. Month navigation (prev/next arrows + dropdown).
