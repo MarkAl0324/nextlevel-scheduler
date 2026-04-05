@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { APP_NAME } from "@/lib/constants"
 import type { NavItem } from "@/types"
