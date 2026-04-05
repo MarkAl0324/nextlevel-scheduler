@@ -1,11 +1,12 @@
 import { Sidebar } from "@/components/layout/Sidebar"
 import { ROUTES } from "@/lib/constants"
-import { CalendarDays, ArrowLeftRight, Settings } from "lucide-react"
+import { CalendarDays, ArrowLeftRight, Settings, KeyRound } from "lucide-react"
 
 const sidebarItems = [
   { label: "Schedule", href: ROUTES.schedule, icon: CalendarDays },
   { label: "Swap Requests", href: ROUTES.swaps, icon: ArrowLeftRight },
   { label: "Admin", href: ROUTES.admin, icon: Settings },
+  { label: "Passcode", href: ROUTES.adminPasscode, icon: KeyRound },
 ]
 
 export default function DashboardLayout({
