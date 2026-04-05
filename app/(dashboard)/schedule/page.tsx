@@ -1,4 +1,4 @@
-import { createServerClient } from "@/lib/supabase/server"
+import { createClient } from "@/lib/supabase/server"
 import { ScheduleGrid } from "@/components/schedule/ScheduleGrid"
 import type { MA, Provider, ScheduleEntry } from "@/types"
 
