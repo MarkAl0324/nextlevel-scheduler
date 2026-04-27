@@ -1,0 +1,92 @@
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.tableWrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th,
+.td {
+  padding: 12px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+
+.th {
+  text-align: left;
+  font-weight: 650;
+  background: color-mix(in oklab, var(--panel) 86%, var(--accent-weak));
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.badge {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
+  white-space: nowrap;
+}
+
+.badgeUnder {
+  border-color: color-mix(in oklab, var(--danger) 30%, var(--border));
+  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
+}
+
+.badgeOver {
+  border-color: color-mix(in oklab, var(--warning) 30%, var(--border));
+  background: color-mix(in oklab, var(--warning) 10%, var(--panel));
+}
+
+.badgeBalanced {
+  border-color: color-mix(in oklab, var(--success) 30%, var(--border));
+  background: color-mix(in oklab, var(--success) 10%, var(--panel));
+}
+
+.link {
+  font-size: 12px;
+  font-weight: 650;
+  color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.table tr:hover td {
+  background: color-mix(in oklab, var(--panel) 84%, var(--accent-weak));
+}

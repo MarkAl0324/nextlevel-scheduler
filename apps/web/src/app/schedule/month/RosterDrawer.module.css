@@ -1,0 +1,169 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+  z-index: 60;
+}
+
+.overlayOpen {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(520px, 92vw);
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transform: translateX(102%);
+  transition: transform 200ms ease;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .drawer {
+    transition: none;
+  }
+}
+
+.header {
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.close {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.body {
+  padding: 12px 14px 16px;
+  overflow: auto;
+  display: grid;
+  gap: 10px;
+}
+
+.metricRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  background: color-mix(in oklab, var(--panel) 92%, var(--background));
+}
+
+.badge {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
+  white-space: nowrap;
+}
+
+.badgeUnder {
+  border-color: color-mix(in oklab, var(--danger) 30%, var(--border));
+  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
+}
+
+.badgeOver {
+  border-color: color-mix(in oklab, var(--warning) 30%, var(--border));
+  background: color-mix(in oklab, var(--warning) 10%, var(--panel));
+}
+
+.badgeBalanced {
+  border-color: color-mix(in oklab, var(--success) 30%, var(--border));
+  background: color-mix(in oklab, var(--success) 10%, var(--panel));
+}
+
+.tableWrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th,
+.td {
+  padding: 10px 10px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+
+.th {
+  text-align: left;
+  font-weight: 650;
+  background: color-mix(in oklab, var(--panel) 86%, var(--accent-weak));
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
+  white-space: nowrap;
+}
+
+.pillUnassigned {
+  border-color: color-mix(in oklab, var(--warning) 30%, var(--border));
+  background: color-mix(in oklab, var(--warning) 10%, var(--panel));
+}
+
+.error {
+  border: 1px solid color-mix(in oklab, var(--danger) 24%, var(--border));
+  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 13px;
+}
+

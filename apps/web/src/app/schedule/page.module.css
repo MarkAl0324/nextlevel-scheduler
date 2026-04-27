@@ -1,0 +1,320 @@
+.page {
+  padding: 2px 0 18px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 680;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.subtitle {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+  border: 1px solid var(--border);
+  background: var(--panel);
+  margin-bottom: 14px;
+}
+
+.summaryItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-right: 1px solid var(--border);
+}
+
+.summaryItem:last-child {
+  border-right: none;
+}
+
+.summaryValue {
+  font-size: 20px;
+  font-weight: 720;
+  font-variant-numeric: tabular-nums;
+}
+
+.summaryLabel {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 14px;
+  align-items: start;
+}
+
+.boardPanel,
+.queuePanel {
+  border: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.boardScroller {
+  overflow: auto;
+}
+
+.boardTable {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.th,
+.td {
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+  vertical-align: top;
+}
+
+.th:last-child,
+.td:last-child {
+  border-right: none;
+}
+
+.th {
+  background: color-mix(in oklab, var(--panel) 88%, var(--foreground) 3%);
+  text-align: left;
+  font-weight: 650;
+}
+
+.workerHeader,
+.workerCell {
+  width: 168px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+.workerHeader {
+  padding: 12px;
+  background: color-mix(in oklab, var(--panel) 82%, var(--foreground) 5%);
+}
+
+.workerCell {
+  padding: 10px 12px;
+  background: var(--panel);
+  font-size: 13px;
+  font-weight: 650;
+  color: color-mix(in oklab, var(--foreground) 88%, transparent);
+}
+
+.dayHeader {
+  min-height: 66px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 10px 8px;
+}
+
+.dayName {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dayLink {
+  display: inline-block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.dayLink:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.dayCounts {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 7px 10px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.status,
+.actionLabel {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--panel) 88%, var(--foreground) 2%);
+  color: color-mix(in oklab, var(--foreground) 78%, transparent);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.statusBalanced {
+  border-color: color-mix(in oklab, var(--success) 34%, var(--border));
+  background: color-mix(in oklab, var(--success) 9%, var(--panel));
+  color: color-mix(in oklab, var(--success) 70%, var(--foreground));
+}
+
+.statusUnder,
+.actionCoverage {
+  border-color: color-mix(in oklab, var(--danger) 38%, var(--border));
+  background: color-mix(in oklab, var(--danger) 9%, var(--panel));
+  color: color-mix(in oklab, var(--danger) 78%, var(--foreground));
+}
+
+.statusOver,
+.actionPending {
+  border-color: color-mix(in oklab, var(--warning) 38%, var(--border));
+  background: color-mix(in oklab, var(--warning) 10%, var(--panel));
+  color: color-mix(in oklab, var(--warning) 78%, var(--foreground));
+}
+
+.actionBlocked {
+  border-color: color-mix(in oklab, var(--danger) 42%, var(--border));
+  background: color-mix(in oklab, var(--danger) 12%, var(--panel));
+  color: color-mix(in oklab, var(--danger) 82%, var(--foreground));
+}
+
+.boardCell {
+  min-height: 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 8px 9px;
+  font-size: 12px;
+}
+
+.cellLabel {
+  font-weight: 650;
+}
+
+.cellDetail {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.cellAssigned {
+  background: color-mix(in oklab, var(--success) 8%, var(--panel));
+}
+
+.cellNeedsCoverage {
+  background: color-mix(in oklab, var(--warning) 12%, var(--panel));
+}
+
+.cellBlocked {
+  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
+}
+
+.cellOff {
+  color: color-mix(in oklab, var(--muted) 82%, transparent);
+  background: color-mix(in oklab, var(--panel) 93%, var(--background));
+}
+
+.queuePanel {
+  padding: 12px;
+  position: sticky;
+  top: 78px;
+}
+
+.queueHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.queueTitle {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+.queueCount {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.emptyQueue {
+  border: 1px dashed var(--border);
+  color: var(--muted);
+  padding: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.actionList {
+  display: grid;
+  gap: 8px;
+}
+
+.actionItem {
+  display: grid;
+  gap: 5px;
+  border: 1px solid var(--border);
+  padding: 9px;
+  background: color-mix(in oklab, var(--panel) 94%, var(--background));
+}
+
+.actionItem:hover {
+  border-color: var(--border-strong);
+  background: color-mix(in oklab, var(--panel) 88%, var(--background));
+}
+
+.actionTitle {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.actionDetail {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+@media (max-width: 1120px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .queuePanel {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .summary {
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
+
+  .summaryItem:nth-child(2) {
+    border-right: none;
+  }
+}

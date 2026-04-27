@@ -1,0 +1,80 @@
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  color: color-mix(in oklab, var(--foreground) 70%, transparent);
+}
+
+.section {
+  border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+  border-radius: 14px;
+  padding: 12px;
+  background: color-mix(in oklab, var(--background) 92%, var(--foreground) 2%);
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  padding: 8px 0;
+  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: color-mix(in oklab, var(--foreground) 70%, transparent);
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 12px;
+  border: 1px solid color-mix(in oklab, var(--foreground) 14%, transparent);
+  background: color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+
+.pillPending {
+  border-color: color-mix(in oklab, dodgerblue 35%, transparent);
+  background: color-mix(in oklab, dodgerblue 10%, var(--background));
+}
+
+.pillDeclined {
+  border-color: color-mix(in oklab, gray 35%, transparent);
+  background: color-mix(in oklab, gray 10%, var(--background));
+}
+
+.link {
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

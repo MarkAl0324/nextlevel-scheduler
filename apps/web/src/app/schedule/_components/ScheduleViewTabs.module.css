@@ -1,0 +1,29 @@
+.tabs {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px;
+  background: var(--panel);
+  box-shadow: 0 1px 0 rgba(17, 24, 39, 0.02);
+}
+
+.tab {
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 650;
+  color: color-mix(in oklab, var(--foreground) 80%, transparent);
+  cursor: pointer;
+}
+
+.tab:hover {
+  background: color-mix(in oklab, var(--panel) 86%, var(--accent-weak));
+}
+
+.tabActive {
+  background: color-mix(in oklab, var(--panel) 84%, var(--accent-weak));
+  border-color: color-mix(in oklab, var(--accent) 22%, var(--border));
+  color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
+}

@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  employee
+  manager
+}
+
+enum SwapPostStatus {
+  posted
+  cancelled
+  expired
+  completed
+}
+
+enum SwapProposalStatus {
+  pending
+  withdrawn
+  declined
+  accepted
+}
+
+enum Weekday {
+  Mon
+  Tue
+  Wed
+  Thu
+  Fri
+  Sat
+  Sun
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  role      Role     @default(employee)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employeeProfile EmployeeProfile?
+}
+
+model EmployeeProfile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignments Assignment[]
+  swapPosts   SwapPost[]    @relation("SwapPostOwner")
+  proposals   SwapProposal[] @relation("SwapProposalProposer")
+  providerRuleRequirements ProviderMaRule[] @relation("ProviderMaRuleRequiredEmployee")
+}
+
+model Provider {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schedules ProviderSchedule[]
+  rules     ProviderMaRule[]
+  assignments Assignment[]
+
+  @@unique([name])
+}
+
+model ProviderSchedule {
+  id         String   @id @default(cuid())
+  date       DateTime @db.Date
+  providerId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@unique([date, providerId])
+  @@index([date])
+}
+
+model Assignment {
+  id          String   @id @default(cuid())
+  date        DateTime @db.Date
+  employeeId  String
+  providerId  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  employee EmployeeProfile @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  provider Provider?       @relation(fields: [providerId], references: [id], onDelete: SetNull)
+
+  swapPostsTargeted SwapPost[] @relation("SwapPostTargetAssignment")
+  swapProposalsOffered SwapProposal[] @relation("SwapProposalOfferedAssignment")
+
+  @@unique([date, employeeId])
+  @@index([date])
+}
+
+model ProviderMaRule {
+  id                 String   @id @default(cuid())
+  providerId          String
+  weekday            Weekday
+  requiredEmployeeId String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  provider         Provider        @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  requiredEmployee EmployeeProfile @relation("ProviderMaRuleRequiredEmployee", fields: [requiredEmployeeId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, weekday])
+}
+
+model SwapPost {
+  id                 String        @id @default(cuid())
+  status             SwapPostStatus @default(posted)
+  note               String?
+  ownerEmployeeId    String
+  targetAssignmentId String
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  ownerEmployee    EmployeeProfile @relation("SwapPostOwner", fields: [ownerEmployeeId], references: [id], onDelete: Cascade)
+  targetAssignment Assignment      @relation("SwapPostTargetAssignment", fields: [targetAssignmentId], references: [id], onDelete: Cascade)
+  proposals        SwapProposal[]
+
+  @@index([status])
+}
+
+model SwapProposal {
+  id                  String            @id @default(cuid())
+  status              SwapProposalStatus @default(pending)
+  postId              String
+  proposerEmployeeId  String
+  offeredAssignmentId String
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  post             SwapPost        @relation(fields: [postId], references: [id], onDelete: Cascade)
+  proposerEmployee EmployeeProfile @relation("SwapProposalProposer", fields: [proposerEmployeeId], references: [id], onDelete: Cascade)
+  offeredAssignment Assignment     @relation("SwapProposalOfferedAssignment", fields: [offeredAssignmentId], references: [id], onDelete: Cascade)
+
+  @@index([postId, status])
+  @@unique([postId, proposerEmployeeId, offeredAssignmentId])
+}
