@@ -1,5 +1,6 @@
 import { PrismaClient, Weekday } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import bcrypt from "bcryptjs";
 import {
   getDemoAssignmentsForWeek,
   getDemoEmployees,
@@ -11,15 +12,14 @@ import {
   toIsoDate,
 } from "../src/lib/demoData";
 
-const DATABASE_URL = process.env.DATABASE_URL;
-if (!DATABASE_URL) {
-  throw new Error("DATABASE_URL is required to run the seed script.");
+// Seed uses the direct postgres URL to avoid Prisma Postgres proxy connection issues during bulk ops.
+const connectionString = process.env.DIRECT_DATABASE_URL ?? process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error("DIRECT_DATABASE_URL or DATABASE_URL is required to run the seed script.");
 }
 
 const prisma = new PrismaClient({
-  adapter: new PrismaPg({
-    connectionString: DATABASE_URL,
-  }),
+  adapter: new PrismaPg({ connectionString }),
 });
 
 function isoToDate(iso: string) {
@@ -27,6 +27,9 @@ function isoToDate(iso: string) {
 }
 
 async function main() {
+  const EMPLOYEE_PASSWORD = await bcrypt.hash("demo123", 10);
+  const MANAGER_PASSWORD = await bcrypt.hash("demo123", 10);
+
   // Clear in dependency-safe order
   await prisma.swapProposal.deleteMany();
   await prisma.swapPost.deleteMany();
@@ -37,6 +40,15 @@ async function main() {
   await prisma.employeeProfile.deleteMany();
   await prisma.user.deleteMany();
 
+  // Manager account
+  await prisma.user.create({
+    data: {
+      email: "manager@demo.local",
+      password: MANAGER_PASSWORD,
+      role: "manager",
+    },
+  });
+
   // Employees (create users + profiles)
   const employees = getDemoEmployees();
   const employeeProfiles = new Map<string, { id: string; name: string }>();
@@ -44,6 +56,7 @@ async function main() {
     const user = await prisma.user.create({
       data: {
         email: `${e.id}@demo.local`,
+        password: EMPLOYEE_PASSWORD,
         role: "employee",
         employeeProfile: { create: { name: e.name } },
       },
@@ -60,7 +73,7 @@ async function main() {
     providerIds.set(p.id, created.id);
   }
 
-  // Provider schedules: any provider referenced by an assignment is considered scheduled that day (demo parity).
+  // Provider schedules: any provider referenced by an assignment is considered scheduled that day.
   const seedDate = new Date();
   const assignments = getDemoAssignmentsForWeek(seedDate);
   const providerScheduleSet = new Set<string>();
@@ -78,7 +91,7 @@ async function main() {
   }
 
   // Assignments
-  const assignmentIds = new Map<string, string>(); // `${employeeDemoId}:${iso}` -> assignmentId
+  const assignmentIds = new Map<string, string>();
   for (const a of assignments) {
     const employee = employeeProfiles.get(a.employeeId)!;
     const providerId = a.providerId ? providerIds.get(a.providerId) : undefined;
@@ -104,9 +117,9 @@ async function main() {
     });
   }
 
-  // Swap posts: connect to target assignment
+  // Swap posts
   const swapPosts = getDemoSwapPosts(seedDate);
-  const postIdMap = new Map<string, string>(); // demoId -> dbId
+  const postIdMap = new Map<string, string>();
   for (const p of swapPosts) {
     const ownerProfileId = employeeProfiles.get(p.ownerEmployeeId)!.id;
     const targetAssignmentId = assignmentIds.get(`${p.ownerEmployeeId}:${p.targetDate}`);
@@ -123,7 +136,7 @@ async function main() {
     postIdMap.set(p.id, created.id);
   }
 
-  // Swap proposals: connect to offered assignment
+  // Swap proposals
   const proposals = getDemoSwapProposals(seedDate);
   for (const pr of proposals) {
     const dbPostId = postIdMap.get(pr.postId);
@@ -142,9 +155,13 @@ async function main() {
     });
   }
 
-  // Print a helpful hint for the week start used
   const weekStart = startOfWeekMonday(seedDate);
-  console.log(`Seeded demo week starting ${toIsoDate(weekStart)}`);
+  console.log(`Seeded week starting ${toIsoDate(weekStart)}`);
+  console.log(`\nTest accounts (password: demo123):`);
+  console.log(`  Manager: manager@demo.local`);
+  for (const e of employees) {
+    console.log(`  Employee: ${e.id}@demo.local  (${e.name})`);
+  }
 }
 
 main()
@@ -155,4 +172,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-

@@ -1,49 +1,120 @@
 import Link from "next/link";
+import styles from "./page.module.css";
+
+function IconCalendar() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M8 3v3m8-3v3M4.5 9.5h15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M6.5 6h11A2.5 2.5 0 0 1 20 8.5v11A2.5 2.5 0 0 1 17.5 22h-11A2.5 2.5 0 0 1 4 19.5v-11A2.5 2.5 0 0 1 6.5 6Z" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconUserClock() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M3 21v-2a4 4 0 0 1 4-4h3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <circle cx="18" cy="17" r="4" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M18 15.2v1.8l1.2 1.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconLink() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconArrowsSwap() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M7 7h12m0 0-3-3m3 3-3 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M17 17H5m0 0 3 3m-3-3 3-3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconBarChart() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconClock() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M12 7v5l3.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+const sections = [
+  {
+    href: "/admin/schedule",
+    label: "Schedule Editor",
+    description: "Assign employees to shifts and link them to providers. Navigate by week.",
+    icon: <IconCalendar />,
+  },
+  {
+    href: "/admin/providers",
+    label: "Provider Schedules",
+    description: "Manage which providers are working each day of the week.",
+    icon: <IconUserClock />,
+  },
+  {
+    href: "/admin/rules",
+    label: "Pairing Rules",
+    description: "Define required MA pairing for providers on specific days. Violated pairings block swaps.",
+    icon: <IconLink />,
+  },
+  {
+    href: "/admin/requests",
+    label: "Swap Requests",
+    description: "Review all employee coverage requests and cancel if needed.",
+    icon: <IconArrowsSwap />,
+  },
+  {
+    href: "/admin/balance",
+    label: "Staffing Balance",
+    description: "Day-by-day provider vs MA balance with roster drilldown.",
+    icon: <IconBarChart />,
+  },
+  {
+    href: "/admin/audit",
+    label: "Audit Log",
+    description: "Chronological record of all schedule changes, swap events, and manager actions.",
+    icon: <IconClock />,
+  },
+] as const;
 
 export default function AdminPage() {
   return (
-    <div>
-      <h1>Admin</h1>
-      <p style={{ color: "var(--muted)", marginTop: 6 }}>
-        Staff tools for balance, pairing rules, and schedule controls.
-      </p>
+    <div className={styles.page}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Admin</h1>
+        <p className={styles.subtitle}>Manager tools for building and maintaining the schedule.</p>
+      </div>
 
-      <div style={{ marginTop: 12, display: "grid", gap: 10 }}>
-        <div
-          style={{
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-            background: "var(--panel)",
-            padding: 12,
-            boxShadow: "var(--shadow)",
-          }}
-        >
-          <div style={{ fontWeight: 650, marginBottom: 6 }}>Staffing Balance</div>
-          <div style={{ color: "var(--muted)", fontSize: 13, marginBottom: 10 }}>
-            Day-by-day providers vs medical assistants, with drilldown to the roster.
-          </div>
-          <Link href="/admin/balance" style={{ fontSize: 12, fontWeight: 650, color: "var(--accent)" }}>
-            Open balance
+      <div className={styles.grid}>
+        {sections.map((s) => (
+          <Link key={s.href} href={s.href} className={styles.card}>
+            <div className={styles.cardTop}>
+              <div className={styles.cardIcon}>{s.icon}</div>
+              <div className={styles.cardLabel}>{s.label}</div>
+            </div>
+            <div className={styles.cardDesc}>{s.description}</div>
+            <div className={styles.cardArrow}>→</div>
           </Link>
-        </div>
-
-        <div
-          style={{
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-            background: "var(--panel)",
-            padding: 12,
-            boxShadow: "var(--shadow)",
-          }}
-        >
-          <div style={{ fontWeight: 650, marginBottom: 6 }}>Provider Pairing Rules</div>
-          <div style={{ color: "var(--muted)", fontSize: 13, marginBottom: 10 }}>
-            Define required medical assistant pairing for providers on specific days.
-          </div>
-          <Link href="/admin/rules" style={{ fontSize: 12, fontWeight: 650, color: "var(--accent)" }}>
-            Open rules
-          </Link>
-        </div>
+        ))}
       </div>
     </div>
   );

@@ -44,6 +44,7 @@ enum Weekday {
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
+  password  String?
   role      Role     @default(employee)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -154,4 +155,31 @@ model SwapProposal {
 
   @@index([postId, status])
   @@unique([postId, proposerEmployeeId, offeredAssignmentId])
+}
+
+enum AuditAction {
+  SWAP_POSTED
+  SWAP_CANCELLED
+  SWAP_PROPOSED
+  SWAP_ACCEPTED
+  SWAP_DECLINED
+  ADMIN_CANCEL_SWAP
+  ASSIGNMENT_CREATED
+  ASSIGNMENT_DELETED
+  ASSIGNMENT_PROVIDER_UPDATED
+  PROVIDER_SCHEDULE_CREATED
+  PROVIDER_SCHEDULE_DELETED
+  RULE_CREATED
+  RULE_DELETED
+}
+
+model AuditEvent {
+  id        String      @id @default(cuid())
+  action    AuditAction
+  actorId   String?
+  actorName String
+  detail    String      @default("{}")
+  createdAt DateTime    @default(now())
+
+  @@index([createdAt(sort: Desc)])
 }

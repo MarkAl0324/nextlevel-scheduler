@@ -24,43 +24,75 @@
   display: inline-flex;
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 4px;
-  background: var(--panel);
-  box-shadow: 0 1px 0 rgba(17, 24, 39, 0.02);
+  padding: 3px;
+  background: var(--panel-2);
+  box-shadow: 0 1px 0 rgba(17, 24, 39, 0.03);
+  gap: 2px;
 }
 
 .tab {
   border: 1px solid transparent;
   background: transparent;
   border-radius: 999px;
-  padding: 8px 10px;
+  padding: 7px 12px;
   font-size: 12px;
-  font-weight: 650;
-  color: color-mix(in oklab, var(--foreground) 80%, transparent);
+  font-weight: 600;
+  color: var(--muted);
   cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.tab:hover {
+  color: var(--foreground);
+  background: color-mix(in oklab, var(--panel) 80%, var(--accent-weak));
 }
 
 .tabActive {
-  background: color-mix(in oklab, var(--panel) 84%, var(--accent-weak));
+  background: var(--panel);
   border-color: color-mix(in oklab, var(--accent) 22%, var(--border));
   color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
+  box-shadow: 0 1px 3px rgba(17, 24, 39, 0.06);
+}
+
+.empty {
+  padding: 32px 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
 }
 
 .list {
   display: grid;
-  gap: 10px;
+  gap: 8px;
+}
+
+.list > *:nth-child(1) { animation: nls-fade-up 180ms ease-out 0ms both; }
+.list > *:nth-child(2) { animation: nls-fade-up 180ms ease-out 30ms both; }
+.list > *:nth-child(3) { animation: nls-fade-up 180ms ease-out 60ms both; }
+.list > *:nth-child(4) { animation: nls-fade-up 180ms ease-out 90ms both; }
+.list > *:nth-child(5) { animation: nls-fade-up 180ms ease-out 110ms both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .list > * { animation: none !important; }
 }
 
 .card {
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 12px;
+  padding: 12px 14px;
   background: var(--panel);
-  box-shadow: var(--shadow);
+  box-shadow: 0 1px 0 rgba(17, 24, 39, 0.03), 0 2px 8px rgba(17, 24, 39, 0.04);
   display: flex;
   justify-content: space-between;
   gap: 12px;
   align-items: center;
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .cardLeft {
@@ -81,13 +113,19 @@
 .secondaryLine {
   font-size: 12px;
   color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .pill {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   border-radius: 999px;
-  padding: 3px 8px;
-  font-size: 12px;
+  padding: 2px 7px;
+  font-size: 11px;
   border: 1px solid var(--border);
   background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
   white-space: nowrap;
@@ -96,42 +134,60 @@
 .pillPending {
   border-color: color-mix(in oklab, var(--accent) 28%, var(--border));
   background: color-mix(in oklab, var(--accent) 10%, var(--panel));
+  color: color-mix(in oklab, var(--accent) 90%, var(--foreground));
 }
 
 .pillDeclined {
   border-color: color-mix(in oklab, var(--muted) 30%, var(--border));
-  background: color-mix(in oklab, var(--muted) 10%, var(--panel));
+  background: color-mix(in oklab, var(--muted) 8%, var(--panel));
+  color: var(--muted);
+}
+
+.pillAccepted {
+  border-color: color-mix(in oklab, var(--success) 28%, var(--border));
+  background: color-mix(in oklab, var(--success) 10%, var(--panel));
+  color: color-mix(in oklab, var(--success) 80%, var(--foreground));
 }
 
 .actions {
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-shrink: 0;
 }
 
+/* Floating toast — slides in from top center */
 .toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 300;
+  min-width: 260px;
+  max-width: 420px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 10px 12px;
+  padding: 12px 16px;
   background: var(--panel);
   box-shadow: var(--shadow);
-  margin-bottom: 12px;
   font-size: 13px;
+  animation: nls-toast-enter 200ms ease-out both;
+  pointer-events: none;
 }
 
 .toastOk {
-  border-color: color-mix(in oklab, var(--success) 24%, var(--border));
-  background: color-mix(in oklab, var(--success) 10%, var(--panel));
+  border-color: color-mix(in oklab, var(--success) 28%, var(--border));
+  background: color-mix(in oklab, var(--success) 8%, var(--panel));
 }
 
 .toastErr {
-  border-color: color-mix(in oklab, var(--danger) 24%, var(--border));
-  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
+  border-color: color-mix(in oklab, var(--danger) 28%, var(--border));
+  background: color-mix(in oklab, var(--danger) 8%, var(--panel));
 }
 
 .toastTitle {
   font-weight: 650;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .link {
@@ -148,10 +204,22 @@
   border: 1px solid var(--border);
   background: var(--panel);
   border-radius: var(--radius-sm);
-  padding: 7px 10px;
+  padding: 7px 12px;
   font-size: 12px;
   font-weight: 650;
   cursor: pointer;
+  transition: background 120ms ease, transform 120ms ease, border-color 120ms ease;
+}
+
+.button:hover {
+  background: var(--panel-2);
+  border-color: var(--border-strong);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .buttonPrimary {
@@ -160,8 +228,17 @@
   color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
 }
 
+.buttonPrimary:hover {
+  background: color-mix(in oklab, var(--accent) 16%, var(--panel));
+  border-color: color-mix(in oklab, var(--accent) 30%, var(--border));
+}
+
 .buttonDanger {
   border-color: color-mix(in oklab, var(--danger) 22%, var(--border));
-  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
+  background: color-mix(in oklab, var(--danger) 8%, var(--panel));
   color: color-mix(in oklab, var(--danger) 82%, var(--foreground));
+}
+
+.buttonDanger:hover {
+  background: color-mix(in oklab, var(--danger) 14%, var(--panel));
 }

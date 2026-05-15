@@ -37,16 +37,18 @@ export default async function SwapBoardPage() {
               <div key={p.id} className={styles.card}>
                 <div className={styles.cardLeft}>
                   <div className={styles.primaryLine}>
-                    {p.owner.name} needs coverage for <strong>{formatMonthDay(p.targetDate)}</strong>
+                    {p.owner.name} — <strong>{formatMonthDay(p.targetDate)}</strong>
                   </div>
-                  <div className={styles.secondaryLine}>Worker request - schedule-safe approval required</div>
                   {p.note ? <div className={styles.note}>{p.note}</div> : null}
                 </div>
 
-                <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                  <span className={statusClass}>{statusLabel}</span>
-                  <Link className={styles.link} href={`/requests/${p.id}`}>
-                    Open request
+                <div className={styles.cardRight}>
+                  <span className={statusClass}>
+                    {p.status === "posted" && <span className={styles.liveDot} aria-hidden="true" />}
+                    {statusLabel}
+                  </span>
+                  <Link className={styles.openBtn} href={`/requests/${p.id}`}>
+                    Open →
                   </Link>
                 </div>
               </div>

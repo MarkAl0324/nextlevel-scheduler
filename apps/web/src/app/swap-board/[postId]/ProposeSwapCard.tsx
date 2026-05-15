@@ -1,34 +1,64 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState, useTransition } from "react";
 import styles from "./ProposeSwapCard.module.css";
-import { canProposeSwapDemo, type IsoDate } from "@/lib/demoData";
+import { createSwapProposal } from "@/lib/actions/swaps";
 
-function formatShort(isoDate: string) {
+function formatDate(isoDate: string) {
   const d = new Date(`${isoDate}T00:00:00`);
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(d);
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  }).format(d);
 }
 
-export function ProposeSwapCard(props: { postId: string; myShiftDates: IsoDate[] }) {
-  const [offeredDate, setOfferedDate] = useState<IsoDate | "">("");
+type MyAssignment = { id: string; date: string; providerName: string | null };
+
+type Props = {
+  postId: string;
+  postOwnerId: string;
+  currentEmployeeId: string;
+  myAssignments: MyAssignment[];
+};
+
+export function ProposeSwapCard({ postId, postOwnerId, currentEmployeeId, myAssignments }: Props) {
+  const [selectedId, setSelectedId] = useState("");
   const [message, setMessage] = useState<{ kind: "idle" | "error" | "ok"; text: string }>({
     kind: "idle",
     text: "",
   });
+  const [isPending, startTransition] = useTransition();
 
-  const options = useMemo(() => props.myShiftDates, [props.myShiftDates]);
+  if (currentEmployeeId === postOwnerId) {
+    return null;
+  }
+
+  if (myAssignments.length === 0) {
+    return (
+      <section className={styles.card} aria-label="Offer coverage">
+        <div className={styles.title}>Offer Coverage</div>
+        <div className={styles.hint}>
+          You have no upcoming shifts to offer for the next 5 weeks.
+        </div>
+      </section>
+    );
+  }
 
   function submit() {
-    if (!offeredDate) {
-      setMessage({ kind: "error", text: "Pick one of your shift dates to offer." });
+    if (!selectedId) {
+      setMessage({ kind: "error", text: "Select one of your shift dates to offer." });
       return;
     }
-    const res = canProposeSwapDemo({ postId: props.postId, offeredDate });
-    if (!res.ok) {
-      setMessage({ kind: "error", text: res.reason });
-      return;
-    }
-    setMessage({ kind: "ok", text: `Coverage offer sent for ${formatShort(offeredDate)}.` });
+    startTransition(async () => {
+      const result = await createSwapProposal(postId, selectedId);
+      if (result.ok) {
+        setMessage({ kind: "ok", text: "Coverage offer sent." });
+        setSelectedId("");
+      } else {
+        setMessage({ kind: "error", text: result.error });
+      }
+    });
   }
 
   return (
@@ -36,31 +66,42 @@ export function ProposeSwapCard(props: { postId: string; myShiftDates: IsoDate[]
       <div className={styles.title}>Offer Coverage</div>
       <div className={styles.row}>
         <label className={styles.hint} style={{ marginTop: 0 }}>
-          Select one of your scheduled dates to offer:
+          Select one of your shifts to offer:
         </label>
         <select
           className={styles.select}
-          value={offeredDate}
-          onChange={(e) => setOfferedDate(e.target.value as IsoDate)}
+          value={selectedId}
+          onChange={(e) => setSelectedId(e.target.value)}
+          disabled={isPending}
         >
           <option value="">Select date...</option>
-          {options.map((d) => (
-            <option key={d} value={d}>
-              {d}
+          {myAssignments.map((a) => (
+            <option key={a.id} value={a.id}>
+              {formatDate(a.date)}
+              {a.providerName ? ` — ${a.providerName}` : ""}
             </option>
           ))}
         </select>
-        <button className={styles.button} type="button" onClick={submit}>
-          Offer coverage
+        <button
+          className={styles.button}
+          type="button"
+          onClick={submit}
+          disabled={isPending}
+        >
+          {isPending ? "Sending…" : "Offer coverage"}
         </button>
       </div>
 
       <div className={styles.hint}>
-        Approval checks the affected shift, role match, schedule conflicts, and provider pairing rules.
+        Approval checks schedule conflicts and provider pairing rules before the swap is applied.
       </div>
 
       {message.kind !== "idle" ? (
-        <div className={`${styles.message} ${message.kind === "error" ? styles.error : styles.ok}`}>{message.text}</div>
+        <div
+          className={`${styles.message} ${message.kind === "error" ? styles.error : styles.ok}`}
+        >
+          {message.text}
+        </div>
       ) : null}
     </section>
   );

@@ -1,0 +1,326 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+/* Week navigation */
+.weekNav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.navArrow {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 120ms ease;
+}
+
+.navArrow:hover {
+  background: color-mix(in oklab, var(--panel) 80%, var(--accent-weak));
+}
+
+.navLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  padding: 0 8px;
+  min-width: 140px;
+  text-align: center;
+}
+
+/* Grid */
+.gridWrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel-2);
+  white-space: nowrap;
+}
+
+.nameCol {
+  width: 160px;
+  min-width: 140px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--panel-2);
+}
+
+.dayHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.dayName {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dayNum {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.td {
+  padding: 5px 6px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.nameCell {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--panel-2);
+  white-space: nowrap;
+  padding: 10px 12px;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+tbody tr:last-child td,
+tbody tr:last-child th {
+  border-bottom: none;
+}
+
+/* Cells */
+.cell {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 6px;
+  padding: 5px 8px;
+  min-width: 90px;
+  font-size: 12px;
+  min-height: 32px;
+}
+
+.cellAssigned {
+  background: color-mix(in oklab, var(--success) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--success) 20%, transparent);
+}
+
+.cellUnassigned {
+  background: color-mix(in oklab, var(--border) 30%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+}
+
+.cellEmpty {
+  border: 1px dashed color-mix(in oklab, var(--border) 70%, transparent);
+  background: transparent;
+}
+
+.cellLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: color-mix(in oklab, var(--success) 80%, var(--text));
+  font-weight: 500;
+}
+
+.cellLabelMuted {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.cellBtn {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  transition: background 100ms ease, color 100ms ease;
+}
+
+.cellBtn:hover {
+  background: color-mix(in oklab, var(--border) 60%, transparent);
+  color: var(--text);
+}
+
+.cellBtnDanger:hover {
+  background: color-mix(in oklab, var(--danger) 14%, transparent);
+  color: color-mix(in oklab, var(--danger) 80%, var(--text));
+}
+
+.addBtn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  text-align: left;
+  min-height: 32px;
+  min-width: 90px;
+  transition: background 100ms ease, color 100ms ease;
+}
+
+.addBtn:hover {
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  color: var(--accent);
+}
+
+/* Modal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  width: 360px;
+  max-width: 92vw;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modalTitle {
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.modalMeta {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: -6px;
+}
+
+.modalLabel {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.modalSelect {
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--foreground);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.modalError {
+  font-size: 12px;
+  color: color-mix(in oklab, var(--danger) 82%, var(--foreground));
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.modalCancel {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.modalCancel:hover { background: var(--panel-2); }
+
+.modalSave {
+  border: 1px solid color-mix(in oklab, var(--accent) 22%, var(--border));
+  background: color-mix(in oklab, var(--accent) 10%, var(--panel));
+  color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.modalSave:hover {
+  background: color-mix(in oklab, var(--accent) 16%, var(--panel));
+}
+
+.modalSave:disabled,
+.modalCancel:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

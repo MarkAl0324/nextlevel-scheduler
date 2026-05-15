@@ -1,0 +1,169 @@
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.weekNav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.navArrow {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 120ms ease;
+}
+
+.navArrow:hover {
+  background: color-mix(in oklab, var(--panel) 80%, var(--accent-weak));
+}
+
+.navLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  padding: 0 8px;
+  min-width: 140px;
+  text-align: center;
+}
+
+.tableWrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+}
+
+.th {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel-2);
+  white-space: nowrap;
+}
+
+.th:first-child {
+  text-align: left;
+}
+
+.td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.nameCell {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.dayHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.dayName {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dayNum {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.dayToggle {
+  width: 36px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 100ms ease, border-color 100ms ease;
+}
+
+.dayToggleOn {
+  background: color-mix(in oklab, var(--success) 14%, var(--panel));
+  border-color: color-mix(in oklab, var(--success) 28%, var(--border));
+  color: color-mix(in oklab, var(--success) 80%, var(--text));
+}
+
+.dayToggleOn:hover {
+  background: color-mix(in oklab, var(--success) 22%, var(--panel));
+}
+
+.dayToggleOff {
+  background: var(--panel);
+  color: var(--muted);
+}
+
+.dayToggleOff:hover {
+  background: color-mix(in oklab, var(--accent) 8%, var(--panel));
+  border-color: color-mix(in oklab, var(--accent) 22%, var(--border));
+  color: var(--accent);
+}
+
+.dayToggle:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+}

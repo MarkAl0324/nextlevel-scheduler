@@ -1,0 +1,105 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  margin-bottom: 4px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--panel);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: color-mix(in oklab, var(--accent) 32%, var(--border));
+  background: color-mix(in oklab, var(--accent) 3%, var(--panel));
+  transform: translateY(-2px);
+  box-shadow: 0 1px 0 rgba(17, 24, 39, 0.04), 0 14px 32px rgba(17, 24, 39, 0.10);
+}
+
+[data-theme="dark"] .card:hover {
+  box-shadow: 0 1px 0 rgba(0,0,0,0.35), 0 14px 36px rgba(0,0,0,0.50);
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--accent) 12%, var(--panel));
+  border: 1px solid color-mix(in oklab, var(--accent) 18%, var(--border));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+  transition: background 150ms ease;
+}
+
+.card:hover .cardIcon {
+  background: color-mix(in oklab, var(--accent) 18%, var(--panel));
+}
+
+.cardLabel {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.cardDesc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.cardArrow {
+  align-self: flex-end;
+  font-size: 16px;
+  color: var(--muted);
+  transition: color 150ms ease, transform 150ms ease;
+  line-height: 1;
+}
+
+.card:hover .cardArrow {
+  color: var(--accent);
+  transform: translateX(3px);
+}

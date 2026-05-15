@@ -1,17 +1,5 @@
 import { prisma } from "@/lib/db";
 import type { IsoDate } from "@/lib/demoData";
-import {
-  getDemoWeek,
-  getDemoRosterForDate,
-  getDemoSwapBoard,
-  getDemoSwapPostDetail,
-  getDemoMySwaps,
-  getDemoProviderMaRules,
-  getDemoAssignmentsForWeek,
-  getDemoEmployees,
-  getDemoProviders,
-  getDemoSwapPosts,
-} from "@/lib/demoData";
 
 type CoverageStatus = "no-staffing" | "balanced" | "understaffed" | "overstaffed";
 type CellStatus = "assigned" | "unassigned" | "off" | "pairing-conflict";
@@ -131,8 +119,8 @@ export async function getWeekBalanceData() {
         medicalAssistantsScheduled: masByDate.get(iso) ?? 0,
       };
     });
-  } catch {
-    return getDemoWeek();
+  } catch (e) {
+    throw e;
   }
 }
 
@@ -288,133 +276,11 @@ export async function getWeekOperationsBoardData(): Promise<WeekOperationsBoardD
         blockedItems: actionItems.filter((i) => i.type === "blocked").length,
       },
     };
-  } catch {
-    return getDemoWeekOperationsBoardData(start, weekStartIso, weekEndIso, days);
+  } catch (e) {
+    throw e;
   }
 }
 
-function getDemoWeekOperationsBoardData(
-  start: Date,
-  weekStartIso: IsoDate,
-  weekEndIso: IsoDate,
-  days: IsoDate[],
-): WeekOperationsBoardData {
-  const employees = getDemoEmployees();
-  const providers = getDemoProviders();
-  const assignments = getDemoAssignmentsForWeek(start);
-  const { rules } = getDemoProviderMaRules();
-  const swapPosts = getDemoSwapPosts(start).filter((p) => p.status === "posted");
-
-  const providerById = new Map(providers.map((p) => [p.id, p]));
-  const employeeById = new Map(employees.map((e) => [e.id, e]));
-  const providersByDate = new Map<IsoDate, Set<string>>();
-  const assignmentsByDate = new Map<IsoDate, number>();
-  const assignmentByWorkerDate = new Map<string, (typeof assignments)[number]>();
-
-  for (const assignment of assignments) {
-    assignmentsByDate.set(assignment.date, (assignmentsByDate.get(assignment.date) ?? 0) + 1);
-    assignmentByWorkerDate.set(`${assignment.employeeId}:${assignment.date}`, assignment);
-    if (assignment.providerId) {
-      const set = providersByDate.get(assignment.date) ?? new Set<string>();
-      set.add(assignment.providerId);
-      providersByDate.set(assignment.date, set);
-    }
-  }
-
-  const ruleByProviderWeekday = new Map(rules.map((r) => [`${r.providerId}:${r.weekday}`, r]));
-  const actionItems: WeekOperationsActionItem[] = [];
-  const conflictByWorkerDate = new Map<string, string>();
-
-  for (const assignment of assignments) {
-    if (!assignment.providerId) continue;
-    const rule = ruleByProviderWeekday.get(`${assignment.providerId}:${weekdayFromIsoDate(assignment.date)}`);
-    if (!rule || rule.requiredEmployeeId === assignment.employeeId) continue;
-    const providerName = providerById.get(assignment.providerId)?.name ?? "Provider";
-    const workerName = employeeById.get(assignment.employeeId)?.name ?? "Worker";
-    const requiredName = employeeById.get(rule.requiredEmployeeId)?.name ?? "required worker";
-    const detail = `${workerName} is assigned, but ${requiredName} is required.`;
-    conflictByWorkerDate.set(`${assignment.employeeId}:${assignment.date}`, detail);
-    actionItems.push({
-      id: `demo-pairing-${assignment.employeeId}-${assignment.date}`,
-      type: "blocked",
-      label: "Pairing conflict",
-      title: `${providerName} pairing conflict`,
-      detail,
-      href: `/schedule/roster?date=${assignment.date}`,
-    });
-  }
-
-  const boardDays = days.map((date) => {
-    const providerCount = providersByDate.get(date)?.size ?? 0;
-    const workerCount = assignmentsByDate.get(date) ?? 0;
-    const delta = workerCount - providerCount;
-    const status = coverageStatus(providerCount, workerCount);
-    if (status === "understaffed") {
-      actionItems.push({
-        id: `demo-coverage-${date}`,
-        type: "coverage-gap",
-        label: "Needs coverage",
-        title: `${Math.abs(delta)} worker${Math.abs(delta) === 1 ? "" : "s"} short`,
-        detail: `${date}: ${providerCount} providers scheduled, ${workerCount} workers assigned.`,
-        href: `/schedule/roster?date=${date}`,
-      });
-    }
-    return {
-      date,
-      providersScheduled: providerCount,
-      workersScheduled: workerCount,
-      delta,
-      status,
-      exceptionCount: status === "understaffed" ? Math.abs(delta) : 0,
-    };
-  });
-
-  for (const post of swapPosts) {
-    const owner = employeeById.get(post.ownerEmployeeId)?.name ?? "Worker";
-    actionItems.push({
-      id: `demo-swap-${post.id}`,
-      type: "pending-request",
-      label: "Pending approval",
-      title: `${owner} requested coverage`,
-      detail: `Target shift: ${post.targetDate}.`,
-      href: `/requests/${post.id}`,
-    });
-  }
-
-  return {
-    weekStartIso,
-    weekEndIso,
-    days: boardDays,
-    workers: employees.map((employee) => ({
-      id: employee.id,
-      name: employee.name,
-      cells: days.map((date) => {
-        const assignment = assignmentByWorkerDate.get(`${employee.id}:${date}`);
-        if (!assignment) return { date, status: "off" as const, label: "Off" };
-        const conflict = conflictByWorkerDate.get(`${employee.id}:${date}`);
-        const providerName = assignment.providerId ? providerById.get(assignment.providerId)?.name : undefined;
-        if (conflict) {
-          return {
-            date,
-            providerName,
-            status: "pairing-conflict" as const,
-            label: "Pairing conflict",
-            detail: conflict,
-          };
-        }
-        if (!providerName) return { date, status: "unassigned" as const, label: "Unassigned" };
-        return { date, providerName, status: "assigned" as const, label: providerName };
-      }),
-    })),
-    actionItems: actionItems.slice(0, 12),
-    summary: {
-      understaffedDays: boardDays.filter((d) => d.status === "understaffed").length,
-      overstaffedDays: boardDays.filter((d) => d.status === "overstaffed").length,
-      pendingRequests: swapPosts.length,
-      blockedItems: actionItems.filter((i) => i.type === "blocked").length,
-    },
-  };
-}
 
 export async function getBalanceRangeData(args: { startIso: IsoDate; endIsoExclusive: IsoDate }) {
   const start = new Date(`${args.startIso}T00:00:00.000Z`);
@@ -452,17 +318,8 @@ export async function getBalanceRangeData(args: { startIso: IsoDate; endIsoExclu
         medicalAssistantsScheduled: masByDate.get(iso) ?? 0,
       };
     });
-  } catch {
-    // Fallback: populate only the current demo week if it overlaps; otherwise 0s.
-    const demoWeek = getDemoWeek();
-    const demoByDate = new Map(demoWeek.map((d) => [d.date, d]));
-    return Array.from({ length: days }, (_, i) => {
-      const d = new Date(start);
-      d.setUTCDate(d.getUTCDate() + i);
-      const iso = toIsoDateUTC(d);
-      const demo = demoByDate.get(iso);
-      return demo ?? { date: iso, providersScheduled: 0, medicalAssistantsScheduled: 0 };
-    });
+  } catch (e) {
+    throw e;
   }
 }
 
@@ -478,8 +335,8 @@ export async function getRosterData(isoDate: IsoDate) {
       date: isoDate,
       assignments: assignments.map((a) => ({ employee: { id: a.employeeId, name: a.employee.name }, provider: a.provider ? { id: a.providerId!, name: a.provider.name } : undefined })),
     };
-  } catch {
-    return getDemoRosterForDate(isoDate);
+  } catch (e) {
+    throw e;
   }
 }
 
@@ -501,8 +358,8 @@ export async function getSwapBoardData() {
         createdAtIso: p.createdAt.toISOString(),
       })),
     };
-  } catch {
-    return getDemoSwapBoard();
+  } catch (e) {
+    throw e;
   }
 }
 
@@ -537,25 +394,24 @@ export async function getSwapPostDetailData(postId: string) {
         createdAtIso: p.createdAt.toISOString(),
       })),
     };
-  } catch {
-    return getDemoSwapPostDetail(postId);
+  } catch (e) {
+    throw e;
   }
 }
 
-export async function getMySwapsData() {
+export async function getMySwapsData(employeeProfileId: string) {
   try {
-    // Until auth exists, mimic “current employee” by taking the first employee profile.
-    const current = await prisma.employeeProfile.findFirst({ orderBy: { createdAt: "asc" } });
-    if (!current) return getDemoMySwaps();
+    const current = await prisma.employeeProfile.findUnique({ where: { id: employeeProfileId } });
+    if (!current) throw new Error("Employee profile not found");
 
     const myPosts = await prisma.swapPost.findMany({
-      where: { ownerEmployeeId: current.id },
+      where: { ownerEmployeeId: employeeProfileId },
       include: { ownerEmployee: true, targetAssignment: true },
       orderBy: { createdAt: "desc" },
     });
 
     const incoming = await prisma.swapProposal.findMany({
-      where: { post: { ownerEmployeeId: current.id } },
+      where: { post: { ownerEmployeeId: employeeProfileId } },
       include: {
         proposerEmployee: true,
         post: { include: { ownerEmployee: true, targetAssignment: true } },
@@ -565,7 +421,7 @@ export async function getMySwapsData() {
     });
 
     const outgoing = await prisma.swapProposal.findMany({
-      where: { proposerEmployeeId: current.id },
+      where: { proposerEmployeeId: employeeProfileId },
       include: {
         proposerEmployee: true,
         post: { include: { ownerEmployee: true, targetAssignment: true } },
@@ -622,8 +478,8 @@ export async function getMySwapsData() {
         },
       })),
     };
-  } catch {
-    return getDemoMySwaps();
+  } catch (e) {
+    throw e;
   }
 }
 
@@ -643,8 +499,8 @@ export async function getProviderRulesData() {
         requiredEmployee: { id: r.requiredEmployeeId, name: r.requiredEmployee.name },
       })),
     };
-  } catch {
-    return getDemoProviderMaRules();
+  } catch (e) {
+    throw e;
   }
 }
 
@@ -678,30 +534,143 @@ export async function getWeeklyRosterMatrixData(args: { weekStartIso: IsoDate })
       employees: employees.map((e) => ({ id: e.id, name: e.name })),
       cells,
     };
-  } catch {
-    // Fallback to demo: treat demo employee ids as row ids and show provider names (if any)
-    const demoEmployees = getDemoEmployees();
-    const demoProviders = getDemoProviders();
-    const providerById = new Map(demoProviders.map((p) => [p.id, p.name]));
+  } catch (e) {
+    throw e;
+  }
+}
 
-    const assignments = getDemoAssignmentsForWeek(new Date());
-    const cells = new Map<string, { providerName?: string }>();
+export type MySwapsData = Awaited<ReturnType<typeof getMySwapsData>>;
+
+// ─── Schedule page data (employee dashboard) ────────────────────────────────
+
+export type ScheduleCell = {
+  date: IsoDate;
+  status: "assigned" | "off";
+  providerName: string | null;
+  assignmentId: string | null;
+};
+
+export type ScheduleEmployee = {
+  id: string;
+  name: string;
+  isCurrentUser: boolean;
+  cells: ScheduleCell[];
+};
+
+export type ScheduleDay = {
+  date: IsoDate;
+  weekdayShort: string;
+  monthDay: string;
+};
+
+export type SchedulePageData = {
+  weekStartIso: IsoDate;
+  weekEndIso: IsoDate;
+  prevWeekIso: IsoDate;
+  nextWeekIso: IsoDate;
+  days: ScheduleDay[];
+  employees: ScheduleEmployee[];
+  currentEmployee: { id: string; name: string } | null;
+};
+
+function weekRangeFromMonday(monday: Date) {
+  const start = new Date(Date.UTC(monday.getUTCFullYear(), monday.getUTCMonth(), monday.getUTCDate()));
+  const end = new Date(start);
+  end.setUTCDate(end.getUTCDate() + 7);
+  return { start, end };
+}
+
+function mondayOfWeek(date: Date): Date {
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const day = d.getUTCDay();
+  const diff = (day + 6) % 7;
+  d.setUTCDate(d.getUTCDate() - diff);
+  return d;
+}
+
+function offsetWeek(monday: IsoDate, weeks: number): IsoDate {
+  const d = new Date(`${monday}T00:00:00.000Z`);
+  d.setUTCDate(d.getUTCDate() + weeks * 7);
+  return toIsoDateUTC(d);
+}
+
+const WEEKDAYS_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+export async function getSchedulePageData(
+  currentEmployeeProfileId: string | null,
+  weekParam: string | null,
+): Promise<SchedulePageData> {
+  const monday = weekParam
+    ? mondayOfWeek(new Date(`${weekParam}T00:00:00.000Z`))
+    : mondayOfWeek(new Date());
+
+  const { start, end } = weekRangeFromMonday(monday);
+  const weekStartIso = toIsoDateUTC(start);
+  const weekEnd = new Date(end);
+  weekEnd.setUTCDate(weekEnd.getUTCDate() - 1);
+  const weekEndIso = toIsoDateUTC(weekEnd);
+  const prevWeekIso = offsetWeek(weekStartIso, -1);
+  const nextWeekIso = offsetWeek(weekStartIso, 1);
+
+  const days: ScheduleDay[] = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(start);
+    d.setUTCDate(d.getUTCDate() + i);
+    const iso = toIsoDateUTC(d);
+    return {
+      date: iso,
+      weekdayShort: WEEKDAYS_SHORT[d.getUTCDay()]!,
+      monthDay: `${d.getUTCMonth() + 1}/${d.getUTCDate()}`,
+    };
+  });
+
+  try {
+    const [allEmployees, assignments] = await Promise.all([
+      prisma.employeeProfile.findMany({ orderBy: { name: "asc" } }),
+      prisma.assignment.findMany({
+        where: { date: { gte: start, lt: end } },
+        include: { employee: true, provider: true },
+      }),
+    ]);
+
+    const assignmentByWorkerDate = new Map<string, (typeof assignments)[number]>();
     for (const a of assignments) {
-      cells.set(`${a.employeeId}:${a.date}`, { providerName: a.providerId ? providerById.get(a.providerId) : undefined });
+      assignmentByWorkerDate.set(`${a.employeeId}:${toIsoDateUTC(a.date)}`, a);
     }
 
-    const startLocal = new Date(`${args.weekStartIso}T00:00:00`);
-    const days = Array.from({ length: 7 }, (_, i) => {
-      const d = new Date(startLocal);
-      d.setDate(d.getDate() + i);
-      return toIsoDateUTC(new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())));
+    const buildEmployeeRow = (emp: (typeof allEmployees)[number]): ScheduleEmployee => ({
+      id: emp.id,
+      name: emp.name,
+      isCurrentUser: emp.id === currentEmployeeProfileId,
+      cells: days.map((day) => {
+        const a = assignmentByWorkerDate.get(`${emp.id}:${day.date}`);
+        if (!a) return { date: day.date, status: "off", providerName: null, assignmentId: null };
+        return {
+          date: day.date,
+          status: "assigned",
+          providerName: a.provider?.name ?? null,
+          assignmentId: a.id,
+        };
+      }),
     });
 
+    const currentEmpRecord = allEmployees.find((e) => e.id === currentEmployeeProfileId) ?? null;
+
+    // Current user's row always first
+    const sorted = [
+      ...allEmployees.filter((e) => e.id === currentEmployeeProfileId),
+      ...allEmployees.filter((e) => e.id !== currentEmployeeProfileId),
+    ];
+
     return {
-      weekStartIso: args.weekStartIso,
+      weekStartIso,
+      weekEndIso,
+      prevWeekIso,
+      nextWeekIso,
       days,
-      employees: demoEmployees.map((e) => ({ id: e.id, name: e.name })),
-      cells,
+      employees: sorted.map(buildEmployeeRow),
+      currentEmployee: currentEmpRecord ? { id: currentEmpRecord.id, name: currentEmpRecord.name } : null,
     };
+  } catch (e) {
+    throw e;
   }
 }

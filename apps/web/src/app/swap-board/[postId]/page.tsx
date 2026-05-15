@@ -1,18 +1,66 @@
 import Link from "next/link";
-import styles from "./page.module.css";
-import { getDemoCurrentEmployee, getDemoEmployeeShiftDates } from "@/lib/demoData";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/db";
 import { getSwapPostDetailData } from "@/lib/serverData";
 import { ProposeSwapCard } from "./ProposeSwapCard";
+import styles from "./page.module.css";
 
 function formatLong(isoDate: string) {
   const d = new Date(`${isoDate}T00:00:00`);
-  return new Intl.DateTimeFormat("en-US", { weekday: "long", month: "short", day: "numeric" }).format(d);
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  }).format(d);
 }
 
-export default async function SwapPostDetailPage({ params }: { params: { postId: string } }) {
-  const { post, proposals } = await getSwapPostDetailData(params.postId);
-  const current = getDemoCurrentEmployee();
-  const myShiftDates = getDemoEmployeeShiftDates(current.id);
+function toIsoDateUTC(d: Date) {
+  const yyyy = d.getUTCFullYear();
+  const mm = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(d.getUTCDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+export default async function SwapPostDetailPage({
+  params,
+}: {
+  params: Promise<{ postId: string }>;
+}) {
+  const { postId } = await params;
+  const [{ post, proposals }, session] = await Promise.all([
+    getSwapPostDetailData(postId),
+    auth(),
+  ]);
+
+  const employeeProfileId = session?.user?.employeeProfileId ?? null;
+
+  // Fetch current user's upcoming assignments so they can offer a shift
+  let myAssignments: { id: string; date: string; providerName: string | null }[] = [];
+  if (employeeProfileId && post && post.ownerEmployeeId !== employeeProfileId) {
+    try {
+      const today = new Date();
+      today.setUTCHours(0, 0, 0, 0);
+      const cutoff = new Date(today);
+      cutoff.setUTCDate(cutoff.getUTCDate() + 35);
+
+      const rows = await prisma.assignment.findMany({
+        where: {
+          employeeId: employeeProfileId,
+          date: { gte: today, lt: cutoff },
+        },
+        include: { provider: { select: { name: true } } },
+        orderBy: { date: "asc" },
+      });
+
+      myAssignments = rows.map((a) => ({
+        id: a.id,
+        date: toIsoDateUTC(a.date),
+        providerName: a.provider?.name ?? null,
+      }));
+    } catch {
+      // leave myAssignments empty; ProposeSwapCard will show an appropriate message
+    }
+  }
 
   if (!post) {
     return (
@@ -52,7 +100,17 @@ export default async function SwapPostDetailPage({ params }: { params: { postId:
         </div>
         <div className={styles.row}>
           <div className={styles.label}>Status</div>
-          <div>{post.status}</div>
+          <span
+            className={`${styles.pill} ${
+              post.status === "posted" ? styles.pillPosted :
+              post.status === "completed" ? styles.pillCompleted : ""
+            }`}
+          >
+            {post.status === "posted" && <span className={styles.liveDot} aria-hidden="true" />}
+            {post.status === "posted" ? "Open" :
+             post.status === "completed" ? "Completed" :
+             post.status === "cancelled" ? "Cancelled" : post.status}
+          </span>
         </div>
         {post.note ? (
           <div className={styles.row}>
@@ -73,28 +131,29 @@ export default async function SwapPostDetailPage({ params }: { params: { postId:
                 <div style={{ fontWeight: 650, fontSize: 13 }}>{p.proposer.name}</div>
                 <div className={styles.subtitle}>Offers: {formatLong(p.offeredDate)}</div>
               </div>
-              <div>
-                <span
-                  className={`${styles.pill} ${
-                    p.status === "pending" ? styles.pillPending : p.status === "declined" ? styles.pillDeclined : ""
-                  }`}
-                >
-                  {p.status}
-                </span>
-              </div>
+              <span
+                className={`${styles.pill} ${
+                  p.status === "pending" ? styles.pillPending :
+                  p.status === "accepted" ? styles.pillAccepted :
+                  p.status === "declined" ? styles.pillDeclined : ""
+                }`}
+              >
+                {p.status === "pending" && <span className={styles.liveDot} aria-hidden="true" />}
+                {p.status}
+              </span>
             </div>
           ))
         )}
       </section>
 
-      <ProposeSwapCard postId={post.id} myShiftDates={myShiftDates} />
-
-      <section className={styles.section} aria-label="Current user">
-        <div className={styles.sectionTitle}>Current User</div>
-        <div className={styles.subtitle}>
-          Signed in as <strong>{current.name}</strong>.
-        </div>
-      </section>
+      {post.status === "posted" && employeeProfileId && (
+        <ProposeSwapCard
+          postId={post.id}
+          postOwnerId={post.ownerEmployeeId}
+          currentEmployeeId={employeeProfileId}
+          myAssignments={myAssignments}
+        />
+      )}
     </div>
   );
 }
