@@ -29,6 +29,7 @@ function isoToDate(iso: string) {
 async function main() {
   const EMPLOYEE_PASSWORD = await bcrypt.hash("demo123", 10);
   const MANAGER_PASSWORD = await bcrypt.hash("demo123", 10);
+  const DEVELOPER_PASSWORD = await bcrypt.hash("demo123", 10);
 
   // Clear in dependency-safe order
   await prisma.swapProposal.deleteMany();
@@ -39,6 +40,15 @@ async function main() {
   await prisma.provider.deleteMany();
   await prisma.employeeProfile.deleteMany();
   await prisma.user.deleteMany();
+
+  // Developer account
+  await prisma.user.create({
+    data: {
+      email: "dev@demo.local",
+      password: DEVELOPER_PASSWORD,
+      role: "developer",
+    },
+  });
 
   // Manager account
   await prisma.user.create({
@@ -158,9 +168,10 @@ async function main() {
   const weekStart = startOfWeekMonday(seedDate);
   console.log(`Seeded week starting ${toIsoDate(weekStart)}`);
   console.log(`\nTest accounts (password: demo123):`);
-  console.log(`  Manager: manager@demo.local`);
+  console.log(`  Developer: dev@demo.local`);
+  console.log(`  Manager:   manager@demo.local`);
   for (const e of employees) {
-    console.log(`  Employee: ${e.id}@demo.local  (${e.name})`);
+    console.log(`  Employee:  ${e.id}@demo.local  (${e.name})`);
   }
 }
 

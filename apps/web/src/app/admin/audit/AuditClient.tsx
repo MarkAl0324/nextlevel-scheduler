@@ -17,6 +17,8 @@ const ACTION_LABELS: Record<string, { label: string; category: "swap" | "schedul
   PROVIDER_SCHEDULE_DELETED:   { label: "Provider day removed",     category: "schedule" },
   RULE_CREATED:                { label: "Pairing rule added",       category: "schedule" },
   RULE_DELETED:                { label: "Pairing rule removed",     category: "schedule" },
+  USER_CREATED:                { label: "User created",             category: "admin" },
+  USER_DELETED:                { label: "User deleted",             category: "admin" },
 };
 
 function buildSummary(action: string, detail: Record<string, unknown>): string {
@@ -48,6 +50,10 @@ function buildSummary(action: string, detail: Record<string, unknown>): string {
       return `${str("providerName")} · ${str("weekday")} → ${str("employeeName")}`;
     case "RULE_DELETED":
       return `${str("providerName")} · ${str("weekday")} (${str("employeeName")})`;
+    case "USER_CREATED":
+      return `${str("email")} (${str("role")})${str("name") ? ` · ${str("name")}` : ""}`;
+    case "USER_DELETED":
+      return `${str("email")} (${str("role")})`;
     default:
       return "";
   }

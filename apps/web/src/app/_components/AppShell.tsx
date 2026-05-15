@@ -8,7 +8,7 @@ import { ThemeToggle } from "./ThemeToggle";
 type SessionUser = {
   name?: string | null;
   email?: string | null;
-  role: "employee" | "manager";
+  role: "employee" | "manager" | "developer";
   employeeProfileId: string | null;
 };
 
@@ -99,7 +99,7 @@ export function AppShell({
     return <>{children}</>;
   }
 
-  const visibleNav = NAV.filter((item) => !item.managerOnly || user.role === "manager");
+  const visibleNav = NAV.filter((item) => !item.managerOnly || user.role === "manager" || user.role === "developer");
 
   const crumb = (() => {
     if (pathname.startsWith("/schedule")) return "Schedule";
@@ -112,11 +112,12 @@ export function AppShell({
     if (pathname.startsWith("/admin/requests")) return "Admin / Swap Requests";
     if (pathname.startsWith("/admin/balance")) return "Admin / Balance";
     if (pathname.startsWith("/admin/audit")) return "Admin / Audit Log";
+    if (pathname.startsWith("/admin/users")) return "Admin / User Management";
     if (pathname.startsWith("/admin")) return "Admin";
     return "Next Level";
   })();
 
-  const roleLabel = user.role === "manager" ? "Manager" : "Employee";
+  const roleLabel = user.role === "manager" ? "Manager" : user.role === "developer" ? "Developer" : "Employee";
 
   return (
     <div className={styles.shell}>

@@ -16,9 +16,14 @@ export const authConfig = {
 
       if (!isLoggedIn) return false;
 
-      if (pathname.startsWith("/admin")) {
-        const role = (auth.user as { role?: string }).role;
-        if (role !== "manager") {
+      const role = (auth.user as { role?: string }).role;
+
+      if (pathname.startsWith("/admin/users")) {
+        if (role !== "developer") {
+          return Response.redirect(new URL("/admin", nextUrl));
+        }
+      } else if (pathname.startsWith("/admin")) {
+        if (role !== "manager" && role !== "developer") {
           return Response.redirect(new URL("/schedule", nextUrl));
         }
       }

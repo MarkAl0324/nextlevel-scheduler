@@ -226,6 +226,33 @@ export type AuditRow = {
   createdAtIso: string;
 };
 
+// ─── Users ────────────────────────────────────────────────────────────────────
+
+export type UserRow = {
+  id: string;
+  email: string;
+  role: string;
+  name: string | null;
+  createdAt: string;
+};
+
+export async function getUsersData(): Promise<UserRow[]> {
+  const users = await prisma.user.findMany({
+    include: { employeeProfile: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  return users.map((u) => ({
+    id: u.id,
+    email: u.email,
+    role: u.role,
+    name: u.employeeProfile?.name ?? null,
+    createdAt: u.createdAt.toISOString(),
+  }));
+}
+
+// ─── Audit ────────────────────────────────────────────────────────────────────
+
 export async function getAuditData(): Promise<{ events: AuditRow[] }> {
   const events = await prisma.auditEvent.findMany({
     orderBy: { createdAt: "desc" },

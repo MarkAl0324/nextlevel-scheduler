@@ -15,6 +15,7 @@ datasource db {
 enum Role {
   employee
   manager
+  developer
 }
 
 enum SwapPostStatus {
@@ -171,6 +172,8 @@ enum AuditAction {
   PROVIDER_SCHEDULE_DELETED
   RULE_CREATED
   RULE_DELETED
+  USER_CREATED
+  USER_DELETED
 }
 
 model AuditEvent {

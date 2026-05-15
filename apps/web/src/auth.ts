@@ -8,12 +8,12 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      role: "employee" | "manager";
+      role: "employee" | "manager" | "developer";
       employeeProfileId: string | null;
     } & DefaultSession["user"];
   }
   interface User {
-    role: "employee" | "manager";
+    role: "employee" | "manager" | "developer";
     employeeProfileId: string | null;
   }
 }
@@ -21,7 +21,7 @@ declare module "next-auth" {
 declare module "@auth/core/jwt" {
   interface JWT {
     id: string;
-    role: "employee" | "manager";
+    role: "employee" | "manager" | "developer";
     employeeProfileId: string | null;
   }
 }
@@ -71,7 +71,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     session({ session, token }) {
       session.user.id = token.id as string;
-      session.user.role = token.role as "employee" | "manager";
+      session.user.role = token.role as "employee" | "manager" | "developer";
       session.user.employeeProfileId = token.employeeProfileId as string | null;
       return session;
     },

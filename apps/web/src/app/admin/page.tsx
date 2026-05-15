@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { auth } from "@/auth";
 import styles from "./page.module.css";
 
 function IconCalendar() {
@@ -57,6 +58,16 @@ function IconClock() {
   );
 }
 
+function IconUsers() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const sections = [
   {
     href: "/admin/schedule",
@@ -96,15 +107,39 @@ const sections = [
   },
 ] as const;
 
-export default function AdminPage() {
+const developerSection = {
+  href: "/admin/users",
+  label: "User Management",
+  description: "Create and manage employee, manager, and developer accounts.",
+  icon: <IconUsers />,
+};
+
+export default async function AdminPage() {
+  const session = await auth();
+  const isDeveloper = session?.user?.role === "developer";
+
   return (
     <div className={styles.page}>
       <div className={styles.header}>
         <h1 className={styles.title}>Admin</h1>
-        <p className={styles.subtitle}>Manager tools for building and maintaining the schedule.</p>
+        <p className={styles.subtitle}>
+          {isDeveloper
+            ? "Developer tools for managing accounts and reviewing system activity."
+            : "Manager tools for building and maintaining the schedule."}
+        </p>
       </div>
 
       <div className={styles.grid}>
+        {isDeveloper && (
+          <Link href={developerSection.href} className={styles.card}>
+            <div className={styles.cardTop}>
+              <div className={styles.cardIcon}>{developerSection.icon}</div>
+              <div className={styles.cardLabel}>{developerSection.label}</div>
+            </div>
+            <div className={styles.cardDesc}>{developerSection.description}</div>
+            <div className={styles.cardArrow}>→</div>
+          </Link>
+        )}
         {sections.map((s) => (
           <Link key={s.href} href={s.href} className={styles.card}>
             <div className={styles.cardTop}>
