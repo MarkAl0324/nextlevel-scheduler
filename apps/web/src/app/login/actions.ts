@@ -17,8 +17,11 @@ export async function loginAction(
   } catch (err) {
     if (err instanceof AuthError) {
       const cause = (err as AuthError & { cause?: { err?: Error } }).cause?.err;
-      return { error: `[debug] ${err.constructor.name} | cause: ${cause?.constructor.name}: ${cause?.message ?? "none"}` };
+      return { error: `[debug] AuthError: ${err.constructor.name} | cause: ${cause?.constructor.name}: ${cause?.message ?? "none"}` };
     }
-    throw err;
+    if (err instanceof Error) {
+      return { error: `[debug] Non-AuthError: ${err.constructor.name}: ${err.message}` };
+    }
+    return { error: `[debug] Unknown error: ${String(err)}` };
   }
 }
