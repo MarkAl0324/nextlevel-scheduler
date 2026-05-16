@@ -2,6 +2,7 @@
 
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 export async function loginAction(
   _prev: { error: string } | null,
@@ -15,13 +16,10 @@ export async function loginAction(
     });
     return null;
   } catch (err) {
+    if (isRedirectError(err)) throw err;
     if (err instanceof AuthError) {
-      const cause = (err as AuthError & { cause?: { err?: Error } }).cause?.err;
-      return { error: `[debug] AuthError: ${err.constructor.name} | cause: ${cause?.constructor.name}: ${cause?.message ?? "none"}` };
+      return { error: "Invalid email or password." };
     }
-    if (err instanceof Error) {
-      return { error: `[debug] Non-AuthError: ${err.constructor.name}: ${err.message}` };
-    }
-    return { error: `[debug] Unknown error: ${String(err)}` };
+    return { error: "Something went wrong. Please try again." };
   }
 }
