@@ -5,6 +5,7 @@ import { Pool } from "pg";
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
 const connectionString =
+  process.env.POSTGRES_URL ??
   process.env.DATABASE_URL ??
   "postgresql://postgres:postgres@localhost:5432/next_level_scheduler";
 
