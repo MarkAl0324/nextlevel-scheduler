@@ -1,0 +1,10 @@
+---
+description: Read project web dev handoff before substantive work
+alwaysApply: true
+---
+
+# Project state
+
+Before implementing features, refactoring broadly, or changing architecture, read **`PROJECT_WEB_DEV_STATE.md`** at the repository root and align with **Active phase** and **Next actions**.
+
+If the file is missing, create it from `templates/PROJECT_WEB_DEV_STATE.template.md` in the repository root.
