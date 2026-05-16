@@ -16,7 +16,8 @@ export async function loginAction(
     return null;
   } catch (err) {
     if (err instanceof AuthError) {
-      return { error: `[debug] ${err.constructor.name}: ${err.message}` };
+      const cause = (err as AuthError & { cause?: { err?: Error } }).cause?.err;
+      return { error: `[debug] ${err.constructor.name} | cause: ${cause?.constructor.name}: ${cause?.message ?? "none"}` };
     }
     throw err;
   }
