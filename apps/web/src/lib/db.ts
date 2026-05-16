@@ -11,15 +11,23 @@ const rawUrl =
 
 const isLocalhost = /localhost|127\.0\.0\.1/.test(rawUrl);
 
-// pg v8 lets sslmode=require/verify-full in the URL override ssl.rejectUnauthorized — strip it
-const connectionString = rawUrl
-  .replace(/\?sslmode=[^&]*(&|$)/, (_, trail) => (trail ? "?" : ""))
-  .replace(/&sslmode=[^&]*/g, "");
-
-const pool = new Pool({
-  connectionString,
-  ...(isLocalhost ? {} : { ssl: { rejectUnauthorized: false } }),
-});
+// For remote connections, parse the URL manually and pass discrete options to pg.Pool.
+// Passing a connectionString lets pg-connection-string override ssl settings from the URL
+// (sslmode=require becomes verify-full in pg v8), breaking rejectUnauthorized: false.
+let pool: Pool;
+if (isLocalhost) {
+  pool = new Pool({ connectionString: rawUrl });
+} else {
+  const u = new URL(rawUrl);
+  pool = new Pool({
+    host: u.hostname,
+    port: u.port ? Number(u.port) : 5432,
+    database: u.pathname.replace(/^\//, ""),
+    user: decodeURIComponent(u.username),
+    password: decodeURIComponent(u.password),
+    ssl: { rejectUnauthorized: false },
+  });
+}
 
 export const prisma =
   globalForPrisma.prisma ?? new PrismaClient({ adapter: new PrismaPg(pool) });
