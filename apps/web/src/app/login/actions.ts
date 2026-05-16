@@ -16,7 +16,7 @@ export async function loginAction(
     return null;
   } catch (err) {
     if (err instanceof AuthError) {
-      return { error: "Invalid email or password." };
+      return { error: `[debug] ${err.constructor.name}: ${err.message}` };
     }
     throw err;
   }
