@@ -2,7 +2,7 @@ import { PrismaClient } from "./src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-const connectionString = process.env.DATABASE_URL!;
+const connectionString = process.env.DATABASE_URL ?? "postgresql://nls_app.pcagigygiwlorhivmsya:NLSched2026!@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres";
 const pool = new Pool({
   connectionString,
   ssl: { rejectUnauthorized: false },
