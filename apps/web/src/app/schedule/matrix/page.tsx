@@ -16,11 +16,7 @@ export default async function ScheduleMatrixPage() {
 
   return (
     <div>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Schedule</h1>
-          <div className={styles.subtitle}>Weekly roster matrix (MAs × days). Click a day to view the roster.</div>
-        </div>
+      <div className={styles.controls}>
         <ScheduleViewTabs />
       </div>
 
