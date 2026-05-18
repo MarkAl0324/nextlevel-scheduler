@@ -115,20 +115,36 @@ function avatarInitials(user: SessionUser) {
   return src[0].toUpperCase();
 }
 
-function pageCrumb(pathname: string) {
-  if (pathname === "/schedule" || pathname.startsWith("/schedule/")) return "Schedule";
-  if (pathname === "/swap-board" || pathname.startsWith("/swap-board/") || pathname === "/requests" || pathname.startsWith("/requests/")) return "Swap Board";
-  if (pathname === "/my-swaps") return "My Requests";
-  if (pathname === "/admin") return "Admin";
-  if (pathname.startsWith("/admin/schedule")) return "Schedule Editor";
-  if (pathname.startsWith("/admin/providers")) return "Provider Schedules";
-  if (pathname.startsWith("/admin/rules")) return "Pairing Rules";
-  if (pathname.startsWith("/admin/requests")) return "Swap Requests";
-  if (pathname.startsWith("/admin/balance")) return "Staffing Balance";
-  if (pathname.startsWith("/admin/audit")) return "Audit Log";
-  if (pathname.startsWith("/admin/users")) return "User Management";
-  if (pathname.startsWith("/admin/")) return "Admin";
-  return "Next Level";
+type PageMeta = { title: string; crumb: string; subtitle: string | null };
+
+function pageMeta(pathname: string, user: SessionUser): PageMeta {
+  const firstName = user.name?.split(" ")[0] ?? null;
+
+  if (pathname === "/schedule" || pathname.startsWith("/schedule/"))
+    return { title: "Schedule", crumb: "Schedule", subtitle: firstName ? `Welcome back, ${firstName}` : "Your weekly shifts" };
+  if (pathname === "/swap-board" || pathname.startsWith("/swap-board/") || pathname === "/requests" || pathname.startsWith("/requests/"))
+    return { title: "Swap Board", crumb: "Swap Board", subtitle: "Coverage requests from your team" };
+  if (pathname === "/my-swaps")
+    return { title: "My Requests", crumb: "My Requests", subtitle: "Your swap activity" };
+  if (pathname === "/admin")
+    return { title: "Admin Hub", crumb: "Admin", subtitle: user.role === "developer" ? "Developer tools and manager controls" : "Schedule and coverage management" };
+  if (pathname.startsWith("/admin/schedule"))
+    return { title: "Schedule Editor", crumb: "Schedule Editor", subtitle: "Assign staff to shifts by week" };
+  if (pathname.startsWith("/admin/providers"))
+    return { title: "Provider Schedules", crumb: "Provider Schedules", subtitle: "Manage provider availability" };
+  if (pathname.startsWith("/admin/rules"))
+    return { title: "Pairing Rules", crumb: "Pairing Rules", subtitle: "Define required MA pairings" };
+  if (pathname.startsWith("/admin/requests"))
+    return { title: "Swap Requests", crumb: "Swap Requests", subtitle: "Review all coverage requests" };
+  if (pathname.startsWith("/admin/balance"))
+    return { title: "Staffing Balance", crumb: "Staffing Balance", subtitle: "Provider vs MA coverage by day" };
+  if (pathname.startsWith("/admin/audit"))
+    return { title: "Audit Log", crumb: "Audit Log", subtitle: "Chronological system activity" };
+  if (pathname.startsWith("/admin/users"))
+    return { title: "User Management", crumb: "User Management", subtitle: "Accounts, roles, and access" };
+  if (pathname.startsWith("/admin/"))
+    return { title: "Admin", crumb: "Admin", subtitle: null };
+  return { title: "Next Level", crumb: "Next Level", subtitle: null };
 }
 
 function isAdminSection(pathname: string) {
