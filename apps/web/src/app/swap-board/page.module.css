@@ -1,67 +1,81 @@
+/* ─────────────────────────────────────────────────────────────
+ * Swap board — card marketplace layout
+ * ──────────────────────────────────────────────────────────── */
+
 .header {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--divider);
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .title {
   font-size: 22px;
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--text-strong);
   margin: 0;
 }
 
 .subtitle {
-  margin-top: 6px;
   font-size: 13px;
   color: var(--muted);
 }
 
+/* ── Card list ──────────────────────────────────────────── */
 .list {
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
 
-/* Stagger fade-up on first 8 cards */
-.list > *:nth-child(1) { animation: nls-fade-up 200ms ease-out 0ms both; }
-.list > *:nth-child(2) { animation: nls-fade-up 200ms ease-out 30ms both; }
-.list > *:nth-child(3) { animation: nls-fade-up 200ms ease-out 60ms both; }
-.list > *:nth-child(4) { animation: nls-fade-up 200ms ease-out 90ms both; }
-.list > *:nth-child(5) { animation: nls-fade-up 200ms ease-out 110ms both; }
-.list > *:nth-child(6) { animation: nls-fade-up 200ms ease-out 130ms both; }
-.list > *:nth-child(7) { animation: nls-fade-up 200ms ease-out 150ms both; }
-.list > *:nth-child(8) { animation: nls-fade-up 200ms ease-out 170ms both; }
+/* Stagger fade-up */
+.list > *:nth-child(1) { animation: nls-fade-up 200ms ease-out 0ms   both; }
+.list > *:nth-child(2) { animation: nls-fade-up 200ms ease-out 30ms  both; }
+.list > *:nth-child(3) { animation: nls-fade-up 200ms ease-out 55ms  both; }
+.list > *:nth-child(4) { animation: nls-fade-up 200ms ease-out 80ms  both; }
+.list > *:nth-child(5) { animation: nls-fade-up 200ms ease-out 100ms both; }
+.list > *:nth-child(6) { animation: nls-fade-up 200ms ease-out 120ms both; }
+.list > *:nth-child(7) { animation: nls-fade-up 200ms ease-out 140ms both; }
+.list > *:nth-child(8) { animation: nls-fade-up 200ms ease-out 155ms both; }
 
 @media (prefers-reduced-motion: reduce) {
   .list > * { animation: none !important; }
 }
 
+/* ── Card ───────────────────────────────────────────────── */
 .card {
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--r-4);
   padding: 14px 16px;
-  background: linear-gradient(180deg, var(--panel) 0%, color-mix(in oklab, var(--panel) 92%, var(--panel-2)) 100%);
+  background: var(--panel);
   display: flex;
   justify-content: space-between;
   gap: 16px;
   align-items: center;
-  box-shadow: 0 1px 0 rgba(17, 24, 39, 0.03), 0 2px 8px rgba(17, 24, 39, 0.04);
-  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+  box-shadow: var(--shadow-1);
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
 }
 
 .card:hover {
   transform: translateY(-1px);
   border-color: var(--border-strong);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-2);
 }
 
 .cardLeft {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
   min-width: 0;
 }
 
@@ -72,66 +86,137 @@
   flex-shrink: 0;
 }
 
+/* ── Card content ───────────────────────────────────────── */
+.avatarRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .primaryLine {
   font-weight: 600;
-  font-size: 13.5px;
+  font-size: 14px;
+  color: var(--text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metaLine {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.metaChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.metaChip svg {
+  flex-shrink: 0;
+  opacity: 0.7;
 }
 
 .note {
   font-size: 12px;
   color: var(--muted);
+  font-style: italic;
+  margin-top: 1px;
 }
 
+/* ── Status badges ──────────────────────────────────────── */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 12px;
-  padding: 3px 8px;
-  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
   border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
+  background: var(--neutral-soft);
+  color: var(--muted);
   white-space: nowrap;
+  line-height: 1.6;
 }
 
 .badgePosted {
-  border-color: color-mix(in oklab, var(--success) 28%, var(--border));
-  background: color-mix(in oklab, var(--success) 10%, var(--panel));
-  color: color-mix(in oklab, var(--success) 80%, var(--text));
+  background: var(--success-soft);
+  border-color: color-mix(in oklab, var(--success) 24%, transparent);
+  color: var(--success);
 }
 
 .badgeExpired {
-  border-color: color-mix(in oklab, var(--muted) 30%, var(--border));
-  background: color-mix(in oklab, var(--muted) 8%, var(--panel));
+  background: var(--neutral-soft);
+  border-color: var(--border-strong);
   color: var(--muted);
 }
 
 .liveDot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: currentColor;
   flex-shrink: 0;
   animation: nls-dot-pulse 2.4s ease-in-out infinite;
 }
 
+/* ── Open button ────────────────────────────────────────── */
 .openBtn {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   font-size: 12px;
-  font-weight: 650;
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  background: color-mix(in oklab, var(--accent) 10%, var(--panel));
-  border: 1px solid color-mix(in oklab, var(--accent) 22%, var(--border));
-  color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
-  transition: background 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  font-weight: 600;
+  padding: 7px 13px;
+  border-radius: var(--r-3);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in oklab, var(--accent) 20%, transparent);
+  color: var(--accent);
+  transition: background 120ms ease, box-shadow 120ms ease, transform 100ms ease;
   white-space: nowrap;
 }
 
 .openBtn:hover {
-  background: color-mix(in oklab, var(--accent) 16%, var(--panel));
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+  box-shadow: 0 2px 8px color-mix(in oklab, var(--accent) 18%, transparent);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px color-mix(in oklab, var(--accent) 20%, transparent);
+}
+
+/* ── Empty state ────────────────────────────────────────── */
+.empty {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--muted);
+  font-size: 14px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-4);
+  background: var(--bg-tint);
+}
+
+.empty strong {
+  display: block;
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 6px;
 }
