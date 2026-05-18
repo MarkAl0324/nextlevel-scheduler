@@ -37,15 +37,6 @@ export default async function SwapBoardPage() {
 
   return (
     <div>
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <h1 className={styles.title}>Swap Board</h1>
-          <p className={styles.subtitle}>
-            Coverage requests from your team — browse and offer to cover a shift.
-          </p>
-        </div>
-      </div>
-
       <div className={styles.list} aria-label="Schedule requests">
         {posts.length === 0 ? (
           <div className={styles.empty}>
