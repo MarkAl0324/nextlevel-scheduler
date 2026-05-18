@@ -117,7 +117,7 @@ function avatarInitials(user: SessionUser) {
 
 function pageCrumb(pathname: string) {
   if (pathname === "/schedule" || pathname.startsWith("/schedule/")) return "Schedule";
-  if (pathname === "/requests" || pathname.startsWith("/requests/") || pathname === "/swap-board" || pathname.startsWith("/swap-board/")) return "Swap Board";
+  if (pathname === "/swap-board" || pathname.startsWith("/swap-board/") || pathname === "/requests" || pathname.startsWith("/requests/")) return "Swap Board";
   if (pathname === "/my-swaps") return "My Requests";
   if (pathname === "/admin") return "Admin";
   if (pathname.startsWith("/admin/schedule")) return "Schedule Editor";
