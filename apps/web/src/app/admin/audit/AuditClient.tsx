@@ -82,11 +82,6 @@ export function AuditClient({ events }: { events: AuditRow[] }) {
 
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Audit Log</h1>
-        <p className={styles.subtitle}>Last {events.length} events, newest first.</p>
-      </div>
-
       <div className={styles.tableWrap}>
         <table className={styles.table}>
           <thead>
