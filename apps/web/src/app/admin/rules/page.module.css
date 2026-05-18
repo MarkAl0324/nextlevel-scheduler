@@ -1,106 +1,64 @@
+/* ── Admin pairing rules page ───────────────────────────── */
 .header {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--divider);
 }
 
 .title {
   font-size: 22px;
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--text-strong);
   margin: 0;
 }
 
 .subtitle {
-  margin-top: 6px;
+  margin-top: 5px;
   font-size: 13px;
   color: var(--muted);
 }
 
 .callout {
-  border: 1px solid color-mix(in oklab, var(--accent) 22%, var(--border));
-  background: color-mix(in oklab, var(--accent) 10%, var(--panel));
-  border-radius: var(--radius);
-  padding: 12px;
-  margin-bottom: 12px;
+  border: 1px solid color-mix(in oklab, var(--info) 22%, transparent);
+  background: var(--info-soft);
+  border-radius: var(--r-3);
+  padding: 13px 16px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--info);
+  line-height: 1.5;
 }
 
 .calloutTitle {
   font-size: 13px;
   font-weight: 650;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  color: var(--info);
 }
 
-.tableWrap {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--panel);
-  box-shadow: var(--shadow);
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.th,
-.td {
-  padding: 12px 12px;
-  font-size: 13px;
-  border-bottom: 1px solid var(--border);
-}
-
-.th {
-  text-align: left;
-  font-weight: 650;
-  background: color-mix(in oklab, var(--panel) 86%, var(--accent-weak));
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.table tr:hover td {
-  background: color-mix(in oklab, var(--panel) 84%, var(--accent-weak));
-}
-
-.pill {
-  display: inline-block;
-  border-radius: 999px;
-  padding: 3px 8px;
-  font-size: 12px;
-  border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
-  white-space: nowrap;
-}
-
-.pillOk {
-  border-color: color-mix(in oklab, var(--success) 30%, var(--border));
-  background: color-mix(in oklab, var(--success) 10%, var(--panel));
-}
-
-.pillBlock {
-  border-color: color-mix(in oklab, var(--danger) 30%, var(--border));
-  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
-}
-
-/* Add rule form */
+/* ── Form card ──────────────────────────────────────────── */
 .formCard {
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--r-4);
   background: var(--panel);
-  padding: 14px;
-  margin-bottom: 12px;
-  box-shadow: var(--shadow);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-1);
 }
 
 .formTitle {
   font-size: 13px;
   font-weight: 650;
-  margin-bottom: 10px;
+  color: var(--text-strong);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--divider);
 }
 
 .formRow {
@@ -111,59 +69,115 @@
 }
 
 .formSelect {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   background: var(--panel);
-  color: var(--foreground);
-  border-radius: var(--radius-sm);
-  padding: 7px 10px;
+  color: var(--text);
+  border-radius: var(--r-3);
+  padding: 8px 12px;
   font-size: 13px;
   flex: 1;
   min-width: 140px;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.formSelect:focus {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-focus);
 }
 
 .formBtn {
-  border: 1px solid color-mix(in oklab, var(--accent) 22%, var(--border));
-  background: color-mix(in oklab, var(--accent) 10%, var(--panel));
-  color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
-  border-radius: var(--radius-sm);
-  padding: 7px 14px;
+  background: var(--accent);
+  color: #fff;
+  border: 1px solid var(--accent);
+  border-radius: var(--r-3);
+  padding: 8px 16px;
   font-size: 13px;
-  font-weight: 650;
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  transition: background 120ms ease;
 }
 
-.formBtn:hover {
-  background: color-mix(in oklab, var(--accent) 16%, var(--panel));
-}
-
-.formBtn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
+.formBtn:hover:not(:disabled) { background: var(--accent-hover); }
+.formBtn:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .formError {
   margin-top: 8px;
   font-size: 12px;
-  color: color-mix(in oklab, var(--danger) 82%, var(--foreground));
+  color: var(--danger);
 }
 
+/* ── Table ──────────────────────────────────────────────── */
+.tableWrap {
+  border: 1px solid var(--border);
+  border-radius: var(--r-4);
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: var(--shadow-1);
+}
+
+.table { width: 100%; border-collapse: collapse; }
+
+.th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-tint);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.td {
+  padding: 11px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--divider);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td { border-bottom: none; }
+
+.table tbody tr:hover td {
+  background: color-mix(in oklab, var(--accent-soft) 22%, transparent);
+}
+
+/* ── Status pills ───────────────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--r-pill);
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--neutral-soft);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.pillOk    { background: var(--success-soft); border-color: color-mix(in oklab, var(--success) 22%, transparent); color: var(--success); }
+.pillBlock { background: var(--danger-soft);  border-color: color-mix(in oklab, var(--danger) 22%, transparent);  color: var(--danger); }
+
 .deleteBtn {
-  border: 1px solid color-mix(in oklab, var(--danger) 22%, var(--border));
-  background: color-mix(in oklab, var(--danger) 8%, var(--panel));
-  color: color-mix(in oklab, var(--danger) 80%, var(--foreground));
-  border-radius: var(--radius-sm);
-  padding: 4px 10px;
+  background: var(--danger-soft);
+  border: 1px solid color-mix(in oklab, var(--danger) 22%, transparent);
+  color: var(--danger);
+  border-radius: var(--r-2);
+  padding: 5px 11px;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
+  transition: background 120ms ease;
 }
 
-.deleteBtn:hover {
-  background: color-mix(in oklab, var(--danger) 14%, var(--panel));
+.deleteBtn:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--danger) 16%, transparent);
 }
 
-.deleteBtn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
+.deleteBtn:disabled { opacity: 0.5; cursor: not-allowed; }
