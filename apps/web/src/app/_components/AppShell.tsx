@@ -256,11 +256,11 @@ function Sidebar({ user, pathname }: { user: SessionUser; pathname: string }) {
 
 /* ── Mobile header ──────────────────────────────────────── */
 function MobileHeader({ user, pathname }: { user: SessionUser; pathname: string }) {
-  const crumb = pageCrumb(pathname);
+  const meta = pageMeta(pathname, user);
   return (
     <header className={styles.mobileHeader}>
       <div className={styles.mobileBrandMark}>NL</div>
-      <h1 className={styles.mobileTitle}>{crumb}</h1>
+      <h1 className={styles.mobileTitle}>{meta.crumb}</h1>
       <div className={styles.mobileHeaderRight}>
         <ThemeToggle />
         <div className={styles.mobileAvatar}>{avatarInitials(user)}</div>
