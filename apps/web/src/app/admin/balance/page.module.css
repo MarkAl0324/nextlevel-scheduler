@@ -1,31 +1,35 @@
+/* ── Admin balance report page ──────────────────────────── */
 .header {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--divider);
 }
 
 .title {
   font-size: 22px;
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--text-strong);
   margin: 0;
 }
 
 .subtitle {
-  margin-top: 6px;
+  margin-top: 5px;
   font-size: 13px;
   color: var(--muted);
 }
 
 .tableWrap {
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--r-4);
   overflow: hidden;
   background: var(--panel);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-1);
 }
 
 .table {
@@ -33,60 +37,58 @@
   border-collapse: collapse;
 }
 
-.th,
-.td {
-  padding: 12px 12px;
-  font-size: 13px;
-  border-bottom: 1px solid var(--border);
-}
-
 .th {
   text-align: left;
-  font-weight: 650;
-  background: color-mix(in oklab, var(--panel) 86%, var(--accent-weak));
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-tint);
   position: sticky;
   top: 0;
   z-index: 1;
 }
 
-.muted {
-  color: var(--muted);
+.td {
+  padding: 11px 14px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--divider);
+  vertical-align: middle;
 }
 
+.muted { color: var(--muted); }
+
+.table tbody tr:last-child td { border-bottom: none; }
+
+.table tbody tr:hover td {
+  background: color-mix(in oklab, var(--accent-soft) 22%, transparent);
+}
+
+/* ── Status badges ──────────────────────────────────────── */
 .badge {
-  font-size: 12px;
-  padding: 3px 8px;
-  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: var(--r-pill);
   border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
+  background: var(--neutral-soft);
+  color: var(--muted);
   white-space: nowrap;
 }
 
-.badgeUnder {
-  border-color: color-mix(in oklab, var(--danger) 30%, var(--border));
-  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
-}
-
-.badgeOver {
-  border-color: color-mix(in oklab, var(--warning) 30%, var(--border));
-  background: color-mix(in oklab, var(--warning) 10%, var(--panel));
-}
-
-.badgeBalanced {
-  border-color: color-mix(in oklab, var(--success) 30%, var(--border));
-  background: color-mix(in oklab, var(--success) 10%, var(--panel));
-}
+.badgeUnder   { background: var(--danger-soft);  border-color: color-mix(in oklab, var(--danger) 22%, transparent);  color: var(--danger); }
+.badgeOver    { background: var(--warning-soft); border-color: color-mix(in oklab, var(--warning) 22%, transparent); color: var(--warning); }
+.badgeBalanced { background: var(--success-soft); border-color: color-mix(in oklab, var(--success) 22%, transparent); color: var(--success); }
 
 .link {
   font-size: 12px;
-  font-weight: 650;
-  color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
+  font-weight: 500;
+  color: var(--accent);
 }
 
-.link:hover {
-  text-decoration: underline;
-}
-
-.table tr:hover td {
-  background: color-mix(in oklab, var(--panel) 84%, var(--accent-weak));
-}
+.link:hover { text-decoration: underline; opacity: 0.8; }
