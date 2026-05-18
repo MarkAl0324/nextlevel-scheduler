@@ -120,15 +120,6 @@ export default async function AdminPage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Admin</h1>
-        <p className={styles.subtitle}>
-          {isDeveloper
-            ? "Developer tools for managing accounts and reviewing system activity."
-            : "Manager tools for building and maintaining the schedule."}
-        </p>
-      </div>
-
       <div className={styles.grid}>
         {isDeveloper && (
           <Link href={developerSection.href} className={styles.card}>
