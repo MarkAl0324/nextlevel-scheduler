@@ -3,12 +3,8 @@ import styles from "./page.module.css";
 export default function MatrixLoading() {
   return (
     <div aria-label="Loading matrix schedule">
-      <div className={styles.header}>
-        <div>
-          <div className="nls-skeleton" style={{ width: 140, height: 24, marginBottom: 8 }} />
-          <div className="nls-skeleton" style={{ width: 320, height: 14 }} />
-        </div>
-        <div className="nls-skeleton" style={{ width: 220, height: 36, borderRadius: 999 }} />
+      <div className={styles.controls}>
+        <div className="nls-skeleton" style={{ width: 220, height: 32, borderRadius: 999 }} />
       </div>
 
       <div className={styles.tableWrap}>
