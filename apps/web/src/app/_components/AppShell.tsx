@@ -302,12 +302,13 @@ function MobileBottomNav({ user, pathname }: { user: SessionUser; pathname: stri
 
 /* ── Topbar ─────────────────────────────────────────────── */
 function Topbar({ user, pathname }: { user: SessionUser; pathname: string }) {
-  const crumb = pageCrumb(pathname);
+  const meta = pageMeta(pathname, user);
   const inAdmin = isAdminSection(pathname);
 
   return (
     <div className={styles.topBar} aria-label="Top bar">
       <div className={styles.topBarLeft}>
+        {/* Breadcrumb trail */}
         <div className={styles.breadcrumbs}>
           <span className={styles.breadcrumbRoot}>Next Level</span>
           <IconChevronRight />
@@ -317,7 +318,14 @@ function Topbar({ user, pathname }: { user: SessionUser; pathname: string }) {
               <IconChevronRight />
             </>
           )}
-          <span className={styles.breadcrumbCurrent}>{crumb}</span>
+          <span className={styles.breadcrumbCurrent}>{meta.crumb}</span>
+        </div>
+        {/* Page title + inline subtitle */}
+        <div className={styles.topBarTitleRow}>
+          <h2 className={styles.topBarTitle}>{meta.title}</h2>
+          {meta.subtitle && (
+            <span className={styles.topBarSubtitle}>{meta.subtitle}</span>
+          )}
         </div>
       </div>
       <div className={styles.topBarRight}>
