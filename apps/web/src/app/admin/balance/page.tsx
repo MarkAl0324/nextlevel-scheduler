@@ -20,15 +20,6 @@ export default async function AdminBalancePage() {
 
   return (
     <div>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Staffing Balance</h1>
-          <div className={styles.subtitle}>
-            Per day: compare scheduled medical assistants against scheduled providers.
-          </div>
-        </div>
-      </div>
-
       <div className={styles.tableWrap} aria-label="Staffing balance table">
         <table className={styles.table}>
           <thead>
