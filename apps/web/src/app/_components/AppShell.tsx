@@ -88,7 +88,7 @@ type NavItem = {
 
 const EMPLOYEE_NAV: NavItem[] = [
   { href: "/schedule", label: "Schedule", icon: <IconCalendar />, section: "employee" },
-  { href: "/requests", label: "Swap Board", icon: <IconArrowsSwap />, section: "employee" },
+  { href: "/swap-board", label: "Swap Board", icon: <IconArrowsSwap />, section: "employee" },
   { href: "/my-swaps", label: "My Requests", icon: <IconInbox />, section: "employee" },
 ];
 
