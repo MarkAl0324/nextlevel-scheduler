@@ -1,3 +1,4 @@
+/* ── Schedule page ──────────────────────────────────────── */
 .page {
   display: flex;
   flex-direction: column;
@@ -10,6 +11,8 @@
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--divider);
 }
 
 .headerLeft {
@@ -18,11 +21,18 @@
   gap: 4px;
 }
 
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .title {
   font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--text);
+  color: var(--text-strong);
 }
 
 .subtitle {
@@ -34,4 +44,17 @@
 .subtitle strong {
   color: var(--text);
   font-weight: 600;
+}
+
+@media (max-width: 620px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .headerRight {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
