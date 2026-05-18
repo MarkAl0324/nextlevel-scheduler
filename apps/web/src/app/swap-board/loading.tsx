@@ -3,13 +3,6 @@ import styles from "./page.module.css";
 export default function RequestsLoading() {
   return (
     <div aria-label="Loading requests">
-      <div className={styles.header}>
-        <div>
-          <div className="nls-skeleton" style={{ width: 160, height: 24, marginBottom: 8 }} />
-          <div className="nls-skeleton" style={{ width: 260, height: 14 }} />
-        </div>
-      </div>
-
       <div className={styles.list}>
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className={styles.card}>
