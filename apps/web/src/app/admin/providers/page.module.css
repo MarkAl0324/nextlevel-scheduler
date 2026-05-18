@@ -1,66 +1,79 @@
+/* ── Admin provider schedules page ─────────────────────── */
 .header {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--divider);
 }
 
 .title {
   font-size: 22px;
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--text-strong);
   margin: 0;
 }
 
 .subtitle {
-  margin-top: 6px;
+  margin-top: 5px;
   font-size: 13px;
   color: var(--muted);
 }
 
+/* ── Week nav ───────────────────────────────────────────── */
 .weekNav {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
-  margin-bottom: 12px;
+  gap: 2px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 3px;
+  box-shadow: var(--shadow-1);
+  margin-bottom: 14px;
 }
 
 .navArrow {
   width: 28px;
   height: 28px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--panel);
-  color: var(--text);
-  font-size: 18px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 120ms ease;
+  transition: background 120ms ease, color 120ms ease;
 }
 
 .navArrow:hover {
-  background: color-mix(in oklab, var(--panel) 80%, var(--accent-weak));
+  background: var(--bg-tint);
+  color: var(--text);
 }
 
 .navLabel {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--muted);
+  color: var(--text);
   padding: 0 8px;
-  min-width: 140px;
+  min-width: 138px;
   text-align: center;
+  white-space: nowrap;
 }
 
+/* ── Table ──────────────────────────────────────────────── */
 .tableWrap {
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--r-4);
   overflow: hidden;
   background: var(--panel);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-1);
   overflow-x: auto;
 }
 
@@ -72,24 +85,22 @@
 
 .th {
   text-align: center;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-subtle);
   padding: 10px 10px;
   border-bottom: 1px solid var(--border);
-  background: var(--panel-2);
+  background: var(--bg-tint);
   white-space: nowrap;
 }
 
-.th:first-child {
-  text-align: left;
-}
+.th:first-child { text-align: left; }
 
 .td {
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--border);
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--divider);
   text-align: center;
   vertical-align: middle;
 }
@@ -99,12 +110,16 @@
   font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
+  color: var(--text);
 }
 
-.table tbody tr:last-child td {
-  border-bottom: none;
+.table tbody tr:last-child td { border-bottom: none; }
+
+.table tbody tr:hover td {
+  background: color-mix(in oklab, var(--accent-soft) 22%, transparent);
 }
 
+/* ── Day header ─────────────────────────────────────────── */
 .dayHead {
   display: flex;
   flex-direction: column;
@@ -113,7 +128,7 @@
 }
 
 .dayName {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -125,45 +140,40 @@
   font-weight: 400;
 }
 
+/* ── Day toggle ─────────────────────────────────────────── */
 .dayToggle {
   width: 36px;
   height: 28px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
+  border-radius: var(--r-2);
+  border: 1px solid var(--border-strong);
+  background: var(--panel);
+  color: var(--muted);
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
-  transition: background 100ms ease, border-color 100ms ease;
+  transition: background 100ms ease, border-color 100ms ease, color 100ms ease;
 }
 
 .dayToggleOn {
-  background: color-mix(in oklab, var(--success) 14%, var(--panel));
-  border-color: color-mix(in oklab, var(--success) 28%, var(--border));
-  color: color-mix(in oklab, var(--success) 80%, var(--text));
+  background: var(--success-soft);
+  border-color: color-mix(in oklab, var(--success) 28%, transparent);
+  color: var(--success);
 }
 
 .dayToggleOn:hover {
-  background: color-mix(in oklab, var(--success) 22%, var(--panel));
-}
-
-.dayToggleOff {
-  background: var(--panel);
-  color: var(--muted);
+  background: color-mix(in oklab, var(--success) 22%, transparent);
 }
 
 .dayToggleOff:hover {
-  background: color-mix(in oklab, var(--accent) 8%, var(--panel));
-  border-color: color-mix(in oklab, var(--accent) 22%, var(--border));
+  background: var(--accent-soft);
+  border-color: color-mix(in oklab, var(--accent) 22%, transparent);
   color: var(--accent);
 }
 
-.dayToggle:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
+.dayToggle:disabled { opacity: 0.55; cursor: not-allowed; }
 
 .hint {
   font-size: 12px;
   color: var(--muted);
-  margin-top: 8px;
+  margin-top: 10px;
 }
