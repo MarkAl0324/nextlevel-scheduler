@@ -259,7 +259,7 @@ function MobileBottomNav({ user, pathname }: { user: SessionUser; pathname: stri
 
   const tabs = [
     { href: "/schedule", label: "Schedule", icon: <IconCalendar /> },
-    { href: "/requests", label: "Board", icon: <IconArrowsSwap /> },
+    { href: "/swap-board", label: "Board", icon: <IconArrowsSwap /> },
     { href: "/my-swaps", label: "My Swaps", icon: <IconInbox /> },
     ...(isManager ? [{ href: "/admin", label: "Admin", icon: <IconShield /> }] : []),
   ];
