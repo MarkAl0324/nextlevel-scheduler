@@ -2,34 +2,10 @@
  * My Swaps — posted requests, incoming offers, my offers
  * ──────────────────────────────────────────────────────────── */
 
-.header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
+.controls {
   margin-bottom: 20px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--divider);
-}
-
-.title {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text-strong);
-  margin: 0;
-}
-
-.subtitle {
-  margin-top: 5px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.subtitle strong {
-  color: var(--text);
-  font-weight: 600;
 }
 
 /* ── Tab strip ──────────────────────────────────────────── */
