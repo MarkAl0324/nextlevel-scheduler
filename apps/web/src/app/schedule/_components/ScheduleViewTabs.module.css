@@ -1,29 +1,42 @@
+/* ── Schedule view tab strip ────────────────────────────── */
 .tabs {
   display: inline-flex;
+  gap: 2px;
+  padding: 3px;
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 4px;
-  background: var(--panel);
-  box-shadow: 0 1px 0 rgba(17, 24, 39, 0.02);
+  border-radius: var(--r-pill);
+  background: var(--bg-tint);
 }
 
 .tab {
-  border: 1px solid transparent;
-  background: transparent;
-  border-radius: 999px;
-  padding: 8px 10px;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
   font-size: 12px;
-  font-weight: 650;
-  color: color-mix(in oklab, var(--foreground) 80%, transparent);
+  font-weight: 500;
+  color: var(--muted);
+  border: 1px solid transparent;
   cursor: pointer;
+  white-space: nowrap;
+  transition: background 100ms ease, color 100ms ease, border-color 100ms ease, box-shadow 100ms ease;
+  text-decoration: none;
 }
 
 .tab:hover {
-  background: color-mix(in oklab, var(--panel) 86%, var(--accent-weak));
+  background: var(--panel);
+  color: var(--text);
+  border-color: var(--border);
 }
 
 .tabActive {
-  background: color-mix(in oklab, var(--panel) 84%, var(--accent-weak));
+  background: var(--panel);
+  color: var(--accent);
   border-color: color-mix(in oklab, var(--accent) 22%, var(--border));
-  color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
+  font-weight: 600;
+  box-shadow: var(--shadow-1);
+}
+
+.tabActive:hover {
+  background: var(--panel);
 }
