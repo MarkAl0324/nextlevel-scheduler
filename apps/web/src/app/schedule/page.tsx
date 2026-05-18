@@ -43,11 +43,14 @@ export default async function SchedulePage({
             </p>
           )}
         </div>
-        <WeekNav
-          label={weekLabel}
-          prevWeekIso={data.prevWeekIso}
-          nextWeekIso={data.nextWeekIso}
-        />
+        <div className={styles.headerRight}>
+          <WeekNav
+            label={weekLabel}
+            prevWeekIso={data.prevWeekIso}
+            nextWeekIso={data.nextWeekIso}
+          />
+          <ScheduleViewTabs />
+        </div>
       </header>
 
       <TeamGrid days={data.days} employees={data.employees} />
