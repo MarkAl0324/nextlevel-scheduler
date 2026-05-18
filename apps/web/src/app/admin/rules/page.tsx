@@ -12,15 +12,6 @@ export default async function AdminRulesPage() {
 
   return (
     <div>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Provider Pairing Rules</h1>
-          <div className={styles.subtitle}>
-            Define required MA pairing for providers on specific days. Violated pairings block swaps with a clear reason.
-          </div>
-        </div>
-      </div>
-
       <RulesClient rules={rules} employees={employees} providers={providers} />
     </div>
   );
