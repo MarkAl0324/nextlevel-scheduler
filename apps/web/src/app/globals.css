@@ -1,51 +1,183 @@
+/* ─────────────────────────────────────────────────────────────
+ * Next Level Scheduler — Global design tokens & base styles
+ * Warm-Notion palette · Geist · Notion-blue accent
+ * ──────────────────────────────────────────────────────────── */
+
 :root {
-  /* Notion-ish neutrals + blue accent */
+  /* ── Fonts ─────────────────────────────────────────── */
+  --font-sans: var(--font-geist-sans), "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ── Type scale ──────────────────────────────────────── */
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 14px;
+  --text-md: 15px;
+  --text-lg: 17px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+
+  /* ── Spacing ─────────────────────────────────────────── */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+
+  /* ── Radii ───────────────────────────────────────────── */
+  --r-1: 4px;
+  --r-2: 6px;
+  --r-3: 8px;
+  --r-4: 12px;
+  --r-5: 16px;
+  --r-pill: 999px;
+  /* legacy */
+  --radius: 12px;
+  --radius-sm: 8px;
+
+  /* ── Colors — Light ──────────────────────────────────── */
   --bg: #fbfbfa;
+  --bg-tint: #f7f6f3;
   --panel: #ffffff;
-  --panel-2: #fcfcfb;
-  --text: #111827;
-  --muted: #6b7280;
-  --border: rgba(17, 24, 39, 0.10);
-  --border-strong: rgba(17, 24, 39, 0.14);
-  --shadow-sm: 0 1px 0 rgba(17, 24, 39, 0.04), 0 6px 18px rgba(17, 24, 39, 0.06);
-  --shadow: 0 1px 0 rgba(17, 24, 39, 0.04), 0 10px 30px rgba(17, 24, 39, 0.08);
+  --panel-2: #f7f6f3;
+  --surface-sunken: #f3f1ec;
+  --overlay: rgba(255, 255, 255, 0.7);
+
+  --border: rgba(40, 35, 30, 0.08);
+  --border-strong: rgba(40, 35, 30, 0.14);
+  --border-focus: rgba(37, 99, 235, 0.5);
+  --divider: rgba(40, 35, 30, 0.06);
+
+  --text: #2a2620;
+  --text-strong: #1a1714;
+  --muted: #6b6660;
+  --text-subtle: #94908a;
+  --text-on-accent: #ffffff;
+
+  /* accent — Notion blue */
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-weak: rgba(37, 99, 235, 0.10);
+  --accent-soft: #eff6ff;
+  --accent-strong: #1e40af;
+
+  /* semantic */
+  --success: #15803d;
+  --success-soft: #dcfce7;
+  --warning: #b45309;
+  --warning-soft: #fef3c7;
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+  --info: #0369a1;
+  --info-soft: #e0f2fe;
+  --neutral-soft: #ececea;
+
+  /* role colors (multi-specialty) */
+  --role-rn: #0d9488;
+  --role-rn-soft: #ccfbf1;
+  --role-ma: #7c3aed;
+  --role-ma-soft: #ede9fe;
+  --role-scribe: #b45309;
+  --role-scribe-soft: #fef3c7;
+  --role-front: #db2777;
+  --role-front-soft: #fce7f3;
+
+  /* ── Shadows ─────────────────────────────────────────── */
+  --shadow-1: 0 1px 2px rgba(15, 15, 15, 0.04), 0 1px 1px rgba(15, 15, 15, 0.03);
+  --shadow-2: 0 1px 3px rgba(15, 15, 15, 0.06), 0 4px 12px rgba(15, 15, 15, 0.04);
+  --shadow-3: 0 4px 8px rgba(15, 15, 15, 0.05), 0 12px 32px rgba(15, 15, 15, 0.08);
+  --shadow-pop: 0 0 0 1px rgba(15, 15, 15, 0.06), 0 10px 32px rgba(15, 15, 15, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.18);
+  /* legacy aliases */
+  --shadow-sm: var(--shadow-1);
+  --shadow: var(--shadow-2);
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 
-  --accent: #2563eb; /* blue-600 */
-  --accent-weak: rgba(37, 99, 235, 0.10);
-  --danger: #dc2626;
-  --warning: #d97706;
-  --success: #16a34a;
-
-  --radius: 12px;
-  --radius-sm: 10px;
-
+  /* ── Legacy aliases ──────────────────────────────────── */
   --background: var(--bg);
   --foreground: var(--text);
 
   color-scheme: light;
 }
 
+/* ── Dark mode ───────────────────────────────────────────── */
 [data-theme="dark"] {
-  --bg: #0b0f17;
-  --panel: #0f1623;
-  --panel-2: #0b121e;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --border: rgba(229, 231, 235, 0.10);
-  --border-strong: rgba(229, 231, 235, 0.16);
-  --shadow-sm: 0 1px 0 rgba(0, 0, 0, 0.35), 0 10px 22px rgba(0, 0, 0, 0.38);
-  --shadow: 0 1px 0 rgba(0, 0, 0, 0.35), 0 14px 34px rgba(0, 0, 0, 0.45);
+  --bg: #1a1815;
+  --bg-tint: #221f1b;
+  --panel: #25221d;
+  --panel-2: #2c2924;
+  --surface-sunken: #1f1d19;
+  --overlay: rgba(20, 18, 15, 0.7);
+
+  --border: rgba(255, 250, 240, 0.08);
+  --border-strong: rgba(255, 250, 240, 0.15);
+  --border-focus: rgba(96, 165, 250, 0.5);
+  --divider: rgba(255, 250, 240, 0.06);
+
+  --text: #ede8e0;
+  --text-strong: #faf6ee;
+  --muted: #a8a39c;
+  --text-subtle: #6b6660;
+  --text-on-accent: #ffffff;
+
+  --accent: #60a5fa;
+  --accent-hover: #93c5fd;
+  --accent-weak: rgba(96, 165, 250, 0.14);
+  --accent-soft: rgba(96, 165, 250, 0.12);
+  --accent-strong: #3b82f6;
+
+  --success: #4ade80;
+  --success-soft: rgba(74, 222, 128, 0.14);
+  --warning: #fbbf24;
+  --warning-soft: rgba(251, 191, 36, 0.14);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.14);
+  --info: #38bdf8;
+  --info-soft: rgba(56, 189, 248, 0.14);
+  --neutral-soft: rgba(255, 250, 240, 0.08);
+
+  --role-rn: #5eead4;
+  --role-rn-soft: rgba(94, 234, 212, 0.14);
+  --role-ma: #c4b5fd;
+  --role-ma-soft: rgba(196, 181, 253, 0.14);
+  --role-scribe: #fbbf24;
+  --role-scribe-soft: rgba(251, 191, 36, 0.14);
+  --role-front: #f9a8d4;
+  --role-front-soft: rgba(249, 168, 212, 0.14);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-3: 0 4px 8px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 0 0 1px rgba(255, 250, 240, 0.06), 0 10px 32px rgba(0, 0, 0, 0.6);
+  --shadow-focus: 0 0 0 3px rgba(96, 165, 250, 0.3);
+  --shadow-sm: var(--shadow-1);
+  --shadow: var(--shadow-2);
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 
-  --accent: #60a5fa; /* blue-400 */
-  --accent-weak: rgba(96, 165, 250, 0.16);
+  --background: var(--bg);
+  --foreground: var(--text);
 
   color-scheme: dark;
 }
 
+/* ── Base resets ─────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
 html {
   height: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 html,
@@ -59,20 +191,13 @@ body {
   display: flex;
   flex-direction: column;
   color: var(--foreground);
-  background:
-    radial-gradient(900px 500px at 18% 0%, color-mix(in oklab, var(--accent) 10%, transparent), transparent 60%),
-    radial-gradient(900px 500px at 80% 0%, color-mix(in oklab, var(--foreground) 6%, transparent), transparent 60%),
-    var(--background);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial,
-    "Apple Color Emoji", "Segoe UI Emoji";
+  background: var(--background);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -81,80 +206,93 @@ a {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
+  color: inherit;
 }
 
-/* Accessible, consistent focus ring */
+p {
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-strong);
+  line-height: 1.2;
+}
+
+/* ── Focus ring ─────────────────────────────────────────── */
 :where(a, button, input, select, textarea):focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px var(--accent-weak);
-  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--r-3);
 }
 
-/* Subtle “dynamic feel” micro-interactions */
-:where(button, a)[role="button"],
-button,
-a {
-  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease, box-shadow 120ms ease,
-    color 120ms ease;
+/* ── Micro-interactions ─────────────────────────────────── */
+:where(button, a[role="button"]):not(:disabled) {
+  transition: background 120ms ease, border-color 120ms ease,
+    box-shadow 120ms ease, color 120ms ease, transform 100ms ease;
 }
 
-:where(button, a)[role="button"]:active,
-button:active,
-a:active {
+:where(button, a[role="button"]):not(:disabled):active {
   transform: translateY(0.5px);
 }
 
-/* Modal / card entrance */
+/* ── Selection ──────────────────────────────────────────── */
+::selection {
+  background: var(--accent-weak);
+}
+
+/* ── Scrollbar (webkit) ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* ── Animations ─────────────────────────────────────────── */
 @keyframes nls-scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96) translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+  from { opacity: 0; transform: scale(0.96) translateY(-6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* List / card stagger */
 @keyframes nls-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Live / open status dot */
 @keyframes nls-dot-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.55;
-  }
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%       { transform: scale(1.5); opacity: 0.55; }
 }
 
-/* Floating toast slide-in */
 @keyframes nls-toast-enter {
-  from {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-10px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.96); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
 }
 
-/* Live dot utility — use via className="nls-live-dot" */
+@keyframes nls-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Utility classes ────────────────────────────────────── */
 .nls-live-dot {
   display: inline-block;
   width: 6px;
@@ -165,29 +303,146 @@ a:active {
   animation: nls-dot-pulse 2.4s ease-in-out infinite;
 }
 
-/* Skeleton shimmer */
-@keyframes nls-shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
 .nls-skeleton {
-  border-radius: var(--radius-sm);
+  border-radius: var(--r-3);
   background: linear-gradient(
     90deg,
-    color-mix(in oklab, var(--panel) 92%, var(--foreground) 2%) 0%,
-    color-mix(in oklab, var(--panel) 86%, var(--foreground) 4%) 35%,
-    color-mix(in oklab, var(--panel) 92%, var(--foreground) 2%) 70%
+    var(--panel) 0%,
+    var(--bg-tint) 35%,
+    var(--panel) 70%
   );
   background-size: 200% 100%;
   animation: nls-shimmer 1200ms ease-in-out infinite;
   border: 1px solid var(--border);
 }
 
-::selection {
-  background: var(--accent-weak);
+/* ── Global badge/chip primitives ───────────────────────── */
+.nls-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: 1.6;
+  border: 1px solid transparent;
+}
+
+.nls-badge-posted  { background: var(--info-soft);    color: var(--info);    border-color: color-mix(in oklab, var(--info) 20%, transparent); }
+.nls-badge-pending { background: var(--warning-soft); color: var(--warning); border-color: color-mix(in oklab, var(--warning) 20%, transparent); }
+.nls-badge-accepted { background: var(--success-soft); color: var(--success); border-color: color-mix(in oklab, var(--success) 20%, transparent); }
+.nls-badge-declined { background: var(--danger-soft);  color: var(--danger);  border-color: color-mix(in oklab, var(--danger) 20%, transparent); }
+.nls-badge-expired  { background: var(--neutral-soft); color: var(--muted);   border-color: var(--border-strong); }
+.nls-badge-neutral  { background: var(--neutral-soft); color: var(--muted);   border-color: var(--border-strong); }
+.nls-badge-accent   { background: var(--accent-soft);  color: var(--accent);  border-color: color-mix(in oklab, var(--accent) 20%, transparent); }
+
+/* role badges */
+.nls-role-rn     { background: var(--role-rn-soft);    color: var(--role-rn);    border-color: color-mix(in oklab, var(--role-rn) 22%, transparent); }
+.nls-role-ma     { background: var(--role-ma-soft);    color: var(--role-ma);    border-color: color-mix(in oklab, var(--role-ma) 22%, transparent); }
+.nls-role-scribe { background: var(--role-scribe-soft); color: var(--role-scribe); border-color: color-mix(in oklab, var(--role-scribe) 22%, transparent); }
+.nls-role-front  { background: var(--role-front-soft); color: var(--role-front); border-color: color-mix(in oklab, var(--role-front) 22%, transparent); }
+
+/* ── Global button primitives ───────────────────────────── */
+.nls-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--r-3);
+  font-size: var(--text-base);
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease, transform 100ms ease;
+}
+
+.nls-btn:active:not(:disabled) { transform: translateY(0.5px); }
+.nls-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.nls-btn-primary {
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border-color: var(--accent);
+}
+.nls-btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.28);
+}
+
+.nls-btn-secondary {
+  background: var(--panel);
+  color: var(--text);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-1);
+}
+.nls-btn-secondary:hover:not(:disabled) {
+  background: var(--bg-tint);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-2);
+}
+
+.nls-btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border-color: transparent;
+}
+.nls-btn-ghost:hover:not(:disabled) {
+  background: var(--bg-tint);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.nls-btn-danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-color: color-mix(in oklab, var(--danger) 22%, transparent);
+}
+.nls-btn-danger:hover:not(:disabled) {
+  background: var(--danger);
+  color: #fff;
+}
+
+.nls-btn-sm {
+  padding: 5px 10px;
+  font-size: var(--text-sm);
+  border-radius: var(--r-2);
+}
+
+/* ── Input primitive ────────────────────────────────────── */
+.nls-input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-3);
+  background: var(--panel);
+  color: var(--text);
+  font-size: var(--text-base);
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.nls-input:focus {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-focus);
+}
+
+.nls-input::placeholder {
+  color: var(--text-subtle);
+}
+
+/* ── Card primitive ─────────────────────────────────────── */
+.nls-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r-4);
+  box-shadow: var(--shadow-1);
+}
+
+.nls-card-hover:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-2);
 }
