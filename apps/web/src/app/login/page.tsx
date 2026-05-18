@@ -12,7 +12,7 @@ export default function LoginPage() {
       <div className={styles.card}>
         <div className={styles.brand}>
           <div className={styles.brandMark}>NL</div>
-          <div>
+          <div className={styles.brandText}>
             <div className={styles.brandName}>Next Level Scheduler</div>
             <div className={styles.brandSub}>Staff scheduling platform</div>
           </div>
