@@ -1,35 +1,48 @@
+/* ── Week navigation ────────────────────────────────────── */
 .nav {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 3px;
+  box-shadow: var(--shadow-1);
 }
 
 .arrow {
   width: 28px;
   height: 28px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--panel);
-  color: var(--text);
-  font-size: 18px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
   line-height: 1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 120ms ease, border-color 120ms ease;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+  padding: 0;
 }
 
 .arrow:hover {
-  background: color-mix(in oklab, var(--panel) 80%, var(--accent-weak));
-  border-color: var(--border-strong);
+  background: var(--bg-tint);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.arrow:active {
+  transform: scale(0.95);
 }
 
 .label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--muted);
-  padding: 0 6px;
-  min-width: 140px;
+  color: var(--text);
+  padding: 0 8px;
+  min-width: 138px;
   text-align: center;
+  white-space: nowrap;
 }
