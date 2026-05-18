@@ -88,13 +88,8 @@ export function UsersClient({ users }: { users: UserRow[] }) {
         </div>
       )}
 
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>User Management</h1>
-          <div className={styles.subtitle}>
-            {users.length} account{users.length !== 1 ? "s" : ""}
-          </div>
-        </div>
+      <div className={styles.controls}>
+        <span className={styles.countLabel}>{users.length} account{users.length !== 1 ? "s" : ""}</span>
         <button type="button" className={styles.newBtn} onClick={openModal} disabled={isPending}>
           + New User
         </button>
