@@ -12,14 +12,6 @@ export default async function AdminProvidersPage({
 
   return (
     <div>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Provider Schedules</h1>
-          <div className={styles.subtitle}>
-            Manage which providers are working each day of the week.
-          </div>
-        </div>
-      </div>
       <ProvidersClient data={data} />
     </div>
   );
