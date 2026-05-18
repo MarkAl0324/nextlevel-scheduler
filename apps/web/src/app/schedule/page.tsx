@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { getSchedulePageData } from "@/lib/serverData";
 import { WeekNav } from "./_components/WeekNav";
+import { ScheduleViewTabs } from "./_components/ScheduleViewTabs";
 import { TeamGrid } from "./_components/TeamGrid";
 import styles from "./page.module.css";
 
