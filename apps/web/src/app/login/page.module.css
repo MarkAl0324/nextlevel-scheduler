@@ -1,24 +1,44 @@
+/* ─────────────────────────────────────────────────────────────
+ * Login page
+ * ──────────────────────────────────────────────────────────── */
+
 .page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+  background: var(--bg);
+}
+
+/* Subtle background pattern */
+.page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(700px 500px at 20% 0%, color-mix(in oklab, var(--accent) 7%, transparent), transparent),
+    radial-gradient(600px 400px at 85% 100%, color-mix(in oklab, var(--role-rn) 5%, transparent), transparent);
+  z-index: 0;
 }
 
 .card {
+  position: relative;
+  z-index: 1;
   background: var(--panel);
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 36px;
+  border-radius: var(--r-5);
+  box-shadow: var(--shadow-3);
+  padding: 40px;
   width: 100%;
-  max-width: 400px;
+  max-width: 392px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 30px;
 }
 
+/* ── Brand ──────────────────────────────────────────────── */
 .brand {
   display: flex;
   align-items: center;
@@ -26,37 +46,45 @@
 }
 
 .brandMark {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   background: var(--accent);
   color: #fff;
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px color-mix(in oklab, var(--accent) 38%, transparent);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .brandName {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
+  font-size: 16px;
+  font-weight: 650;
+  color: var(--text-strong);
+  letter-spacing: -0.015em;
   line-height: 1.2;
 }
 
 .brandSub {
   font-size: 12px;
   color: var(--muted);
-  margin-top: 2px;
 }
 
+/* ── Form ───────────────────────────────────────────────── */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .field {
@@ -72,55 +100,62 @@
 }
 
 .input {
-  padding: 9px 12px;
+  padding: 10px 13px;
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
+  border-radius: var(--r-3);
   background: var(--bg);
   color: var(--text);
   font-size: 14px;
-  font-family: inherit;
   outline: none;
-  transition: border-color 120ms ease, box-shadow 120ms ease;
+  transition: border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
 }
 
 .input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-weak);
+  background: var(--panel);
+  box-shadow: var(--shadow-focus);
 }
 
 .input::placeholder {
-  color: var(--muted);
+  color: var(--text-subtle);
 }
 
+/* ── Error ──────────────────────────────────────────────── */
 .error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   font-size: 13px;
   color: var(--danger);
-  padding: 9px 12px;
-  background: color-mix(in oklab, var(--danger) 8%, transparent);
-  border: 1px solid color-mix(in oklab, var(--danger) 20%, transparent);
-  border-radius: var(--radius-sm);
+  padding: 10px 13px;
+  background: var(--danger-soft);
+  border: 1px solid color-mix(in oklab, var(--danger) 22%, transparent);
+  border-radius: var(--r-3);
+  line-height: 1.4;
 }
 
+/* ── Submit ─────────────────────────────────────────────── */
 .submit {
-  padding: 10px 16px;
+  padding: 11px 16px;
   background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-sm);
+  color: var(--text-on-accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--r-3);
   font-size: 14px;
-  font-weight: 500;
-  font-family: inherit;
+  font-weight: 600;
   cursor: pointer;
-  transition: opacity 120ms ease, transform 80ms ease;
   margin-top: 4px;
+  box-shadow: 0 2px 8px color-mix(in oklab, var(--accent) 28%, transparent);
+  transition: background 120ms ease, box-shadow 120ms ease, transform 100ms ease;
 }
 
 .submit:hover:not(:disabled) {
-  opacity: 0.92;
+  background: var(--accent-hover);
+  box-shadow: 0 4px 14px color-mix(in oklab, var(--accent) 34%, transparent);
 }
 
 .submit:active:not(:disabled) {
-  transform: translateY(1px);
+  transform: translateY(0.5px);
 }
 
 .submit:disabled {
@@ -128,19 +163,22 @@
   cursor: not-allowed;
 }
 
+/* ── Hint ───────────────────────────────────────────────── */
 .hint {
   font-size: 12px;
   color: var(--muted);
   text-align: center;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--divider);
   padding-top: 20px;
+  line-height: 1.5;
 }
 
 .hint code {
-  font-family: ui-monospace, monospace;
-  background: var(--panel-2);
+  font-family: var(--font-mono);
+  background: var(--bg-tint);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 1px 5px;
+  border-radius: var(--r-1);
+  padding: 1px 6px;
   font-size: 11px;
+  color: var(--accent);
 }
