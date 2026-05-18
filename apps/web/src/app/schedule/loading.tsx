@@ -3,12 +3,10 @@ import styles from "./page.module.css";
 export default function ScheduleLoading() {
   return (
     <div className={styles.page} aria-label="Loading schedule">
-      <header className={styles.header}>
-        <div>
-          <div className="nls-skeleton" style={{ width: 180, height: 24, marginBottom: 8 }} />
-          <div className="nls-skeleton" style={{ width: 340, height: 14 }} />
-        </div>
-      </header>
+      <div className={styles.controls}>
+        <div className="nls-skeleton" style={{ width: 180, height: 28, borderRadius: 999 }} />
+        <div className="nls-skeleton" style={{ width: 120, height: 28, borderRadius: 6 }} />
+      </div>
 
       <section className={styles.grid} aria-label="Loading week">
         {Array.from({ length: 7 }).map((_, i) => (
