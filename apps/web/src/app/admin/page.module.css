@@ -1,91 +1,98 @@
+/* ─────────────────────────────────────────────────────────────
+ * Admin hub
+ * ──────────────────────────────────────────────────────────── */
+
 .page {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .header {
-  margin-bottom: 4px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--divider);
 }
 
 .title {
   font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--text);
+  color: var(--text-strong);
   margin: 0;
 }
 
 .subtitle {
   font-size: 13px;
   color: var(--muted);
-  margin: 4px 0 0;
+  margin: 5px 0 0;
+  line-height: 1.4;
 }
 
+/* ── Grid ───────────────────────────────────────────────── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
   gap: 10px;
 }
 
+/* ── Cards ──────────────────────────────────────────────── */
 .card {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--r-4);
   background: var(--panel);
-  padding: 16px;
-  box-shadow: var(--shadow);
+  padding: 18px 18px 14px;
+  box-shadow: var(--shadow-1);
   text-decoration: none;
-  transition: border-color 150ms ease, background 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+  color: inherit;
+  transition: border-color 140ms ease, background 140ms ease,
+    transform 140ms ease, box-shadow 140ms ease;
   position: relative;
   overflow: hidden;
 }
 
 .card:hover {
-  border-color: color-mix(in oklab, var(--accent) 32%, var(--border));
-  background: color-mix(in oklab, var(--accent) 3%, var(--panel));
+  border-color: color-mix(in oklab, var(--accent) 28%, var(--border));
+  background: color-mix(in oklab, var(--accent) 2.5%, var(--panel));
   transform: translateY(-2px);
-  box-shadow: 0 1px 0 rgba(17, 24, 39, 0.04), 0 14px 32px rgba(17, 24, 39, 0.10);
-}
-
-[data-theme="dark"] .card:hover {
-  box-shadow: 0 1px 0 rgba(0,0,0,0.35), 0 14px 36px rgba(0,0,0,0.50);
+  box-shadow: var(--shadow-2);
 }
 
 .cardTop {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
 }
 
 .cardIcon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: color-mix(in oklab, var(--accent) 12%, var(--panel));
-  border: 1px solid color-mix(in oklab, var(--accent) 18%, var(--border));
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-3);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in oklab, var(--accent) 18%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--accent);
   flex-shrink: 0;
-  transition: background 150ms ease;
+  transition: background 140ms ease;
 }
 
 .card:hover .cardIcon {
-  background: color-mix(in oklab, var(--accent) 18%, var(--panel));
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
 }
 
 .cardLabel {
   font-size: 14px;
   font-weight: 650;
-  color: var(--text);
+  color: var(--text-strong);
+  letter-spacing: -0.01em;
 }
 
 .cardDesc {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--muted);
   line-height: 1.5;
   flex: 1;
@@ -94,12 +101,24 @@
 .cardArrow {
   align-self: flex-end;
   font-size: 16px;
-  color: var(--muted);
-  transition: color 150ms ease, transform 150ms ease;
+  color: var(--text-subtle);
+  transition: color 140ms ease, transform 140ms ease;
   line-height: 1;
 }
 
 .card:hover .cardArrow {
   color: var(--accent);
-  transform: translateX(3px);
+  transform: translateX(4px);
+}
+
+@media (max-width: 620px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 440px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
