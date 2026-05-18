@@ -5,6 +5,20 @@ export const authConfig = {
     signIn: "/login",
   },
   callbacks: {
+    // Maps JWT token claims → session.user so the `authorized` callback
+    // (and any proxy-level auth check) can read custom fields like `role`.
+    // This callback must live here (not only in auth.ts) because proxy.ts
+    // only imports authConfig — no Prisma, edge-safe.
+    session({ session, token }) {
+      if (token) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const u = session.user as any;
+        u.id = token.id;
+        u.role = token.role;
+        u.employeeProfileId = token.employeeProfileId;
+      }
+      return session;
+    },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const { pathname } = nextUrl;
