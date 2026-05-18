@@ -1,11 +1,13 @@
+/* ── Roster drawer ──────────────────────────────────────── */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.28);
   opacity: 0;
   pointer-events: none;
   transition: opacity 180ms ease;
   z-index: 60;
+  backdrop-filter: blur(2px);
 }
 
 .overlayOpen {
@@ -18,12 +20,12 @@
   top: 0;
   right: 0;
   height: 100vh;
-  width: min(520px, 92vw);
+  width: min(480px, 92vw);
   background: var(--panel);
   border-left: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-pop);
   transform: translateX(102%);
-  transition: transform 200ms ease;
+  transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 70;
   display: flex;
   flex-direction: column;
@@ -41,80 +43,87 @@
 }
 
 .header {
-  padding: 14px 14px 10px;
-  border-bottom: 1px solid var(--border);
+  padding: 16px 18px 14px;
+  border-bottom: 1px solid var(--divider);
   display: flex;
   justify-content: space-between;
   gap: 10px;
   align-items: flex-start;
+  flex-shrink: 0;
 }
 
 .title {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--text-strong);
+  letter-spacing: -0.01em;
 }
 
 .subtitle {
   font-size: 12px;
   color: var(--muted);
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .close {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   background: var(--panel);
-  border-radius: 999px;
-  padding: 6px 10px;
+  border-radius: var(--r-pill);
+  padding: 5px 12px;
   font-size: 12px;
-  font-weight: 650;
+  font-weight: 500;
   cursor: pointer;
+  color: var(--muted);
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.close:hover {
+  background: var(--bg-tint);
+  color: var(--text);
 }
 
 .body {
-  padding: 12px 14px 16px;
-  overflow: auto;
-  display: grid;
-  gap: 10px;
+  padding: 14px 18px 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
 }
 
+/* ── Metric row ─────────────────────────────────────────── */
 .metricRow {
   display: flex;
   gap: 10px;
   align-items: center;
   justify-content: space-between;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 10px 12px;
-  background: color-mix(in oklab, var(--panel) 92%, var(--background));
+  border-radius: var(--r-3);
+  padding: 10px 14px;
+  background: var(--bg-tint);
 }
 
 .badge {
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 500;
   padding: 3px 8px;
-  border-radius: 999px;
+  border-radius: var(--r-pill);
   border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
+  background: var(--neutral-soft);
+  color: var(--muted);
   white-space: nowrap;
 }
 
-.badgeUnder {
-  border-color: color-mix(in oklab, var(--danger) 30%, var(--border));
-  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
-}
+.badgeUnder  { background: var(--danger-soft);  border-color: color-mix(in oklab, var(--danger) 22%, transparent);  color: var(--danger); }
+.badgeOver   { background: var(--warning-soft); border-color: color-mix(in oklab, var(--warning) 22%, transparent); color: var(--warning); }
+.badgeBalanced { background: var(--success-soft); border-color: color-mix(in oklab, var(--success) 22%, transparent); color: var(--success); }
 
-.badgeOver {
-  border-color: color-mix(in oklab, var(--warning) 30%, var(--border));
-  background: color-mix(in oklab, var(--warning) 10%, var(--panel));
-}
-
-.badgeBalanced {
-  border-color: color-mix(in oklab, var(--success) 30%, var(--border));
-  background: color-mix(in oklab, var(--success) 10%, var(--panel));
-}
-
+/* ── Table ──────────────────────────────────────────────── */
 .tableWrap {
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--r-3);
   overflow: hidden;
   background: var(--panel);
 }
@@ -126,44 +135,49 @@
 
 .th,
 .td {
-  padding: 10px 10px;
+  padding: 10px 12px;
   font-size: 13px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--divider);
 }
 
 .th {
   text-align: left;
-  font-weight: 650;
-  background: color-mix(in oklab, var(--panel) 86%, var(--accent-weak));
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--bg-tint);
 }
 
-.muted {
-  color: var(--muted);
+.table tr:last-child td {
+  border-bottom: none;
 }
+
+.muted { color: var(--muted); }
 
 .pill {
-  display: inline-block;
-  border-radius: 999px;
-  padding: 3px 8px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--r-pill);
+  padding: 2px 8px;
   font-size: 12px;
   border: 1px solid var(--border);
-  background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
+  background: var(--neutral-soft);
   white-space: nowrap;
 }
 
 .pillUnassigned {
-  border-color: color-mix(in oklab, var(--warning) 30%, var(--border));
-  background: color-mix(in oklab, var(--warning) 10%, var(--panel));
+  border-color: color-mix(in oklab, var(--warning) 28%, transparent);
+  background: var(--warning-soft);
+  color: var(--warning);
 }
 
 .error {
-  border: 1px solid color-mix(in oklab, var(--danger) 24%, var(--border));
-  background: color-mix(in oklab, var(--danger) 10%, var(--panel));
-  border-radius: var(--radius);
-  padding: 10px 12px;
+  border: 1px solid color-mix(in oklab, var(--danger) 22%, transparent);
+  background: var(--danger-soft);
+  border-radius: var(--r-3);
+  padding: 12px 14px;
   font-size: 13px;
+  color: var(--danger);
 }
-
