@@ -68,13 +68,7 @@ export function MySwapsClient({ data }: { data: MySwapsData }) {
 
   return (
     <div>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>My Requests</h1>
-          <div className={styles.subtitle}>
-            Signed in as <strong>{current.name}</strong>. Track your schedule requests and offers.
-          </div>
-        </div>
+      <div className={styles.controls}>
         <MySwapsTabs />
       </div>
 
