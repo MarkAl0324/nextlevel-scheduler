@@ -104,7 +104,7 @@ const DEVELOPER_NAV: NavItem[] = [
 function isActive(pathname: string, href: string) {
   if (href === "/admin") return pathname === "/admin";
   if (href === "/schedule") return pathname === "/schedule" || pathname.startsWith("/schedule/");
-  if (href === "/requests") return pathname === "/requests" || pathname.startsWith("/requests/") || pathname.startsWith("/swap-board/");
+  if (href === "/requests") return pathname === "/requests" || pathname.startsWith("/requests/") || pathname === "/swap-board" || pathname.startsWith("/swap-board/");
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
