@@ -34,24 +34,14 @@ export default async function SchedulePage({
 
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.headerLeft}>
-          <h1 className={styles.title}>Schedule</h1>
-          {data.currentEmployee && (
-            <p className={styles.subtitle}>
-              Viewing as <strong>{data.currentEmployee.name}</strong>
-            </p>
-          )}
-        </div>
-        <div className={styles.headerRight}>
-          <WeekNav
-            label={weekLabel}
-            prevWeekIso={data.prevWeekIso}
-            nextWeekIso={data.nextWeekIso}
-          />
-          <ScheduleViewTabs />
-        </div>
-      </header>
+      <div className={styles.controls}>
+        <WeekNav
+          label={weekLabel}
+          prevWeekIso={data.prevWeekIso}
+          nextWeekIso={data.nextWeekIso}
+        />
+        <ScheduleViewTabs />
+      </div>
 
       <TeamGrid days={data.days} employees={data.employees} />
     </div>
