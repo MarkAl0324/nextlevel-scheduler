@@ -1,21 +1,25 @@
+/* ── Admin requests page ────────────────────────────────── */
 .header {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--divider);
 }
 
 .title {
   font-size: 22px;
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--text-strong);
   margin: 0;
 }
 
 .subtitle {
-  margin-top: 6px;
+  margin-top: 5px;
   font-size: 13px;
   color: var(--muted);
 }
@@ -23,15 +27,20 @@
 .empty {
   font-size: 13px;
   color: var(--muted);
-  padding: 16px 0;
+  padding: 32px 0;
+  text-align: center;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-4);
+  background: var(--bg-tint);
 }
 
+/* ── Table ──────────────────────────────────────────────── */
 .tableWrap {
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--r-4);
   overflow: hidden;
   background: var(--panel);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-1);
   overflow-x: auto;
 }
 
@@ -43,21 +52,21 @@
 
 .th {
   text-align: left;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: var(--muted);
-  padding: 10px 12px;
+  color: var(--text-subtle);
+  padding: 10px 14px;
   border-bottom: 1px solid var(--border);
-  background: var(--panel-2);
+  background: var(--bg-tint);
   white-space: nowrap;
 }
 
 .td {
-  padding: 10px 12px;
+  padding: 11px 14px;
   font-size: 13px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--divider);
   vertical-align: middle;
 }
 
@@ -69,35 +78,32 @@
   white-space: nowrap;
 }
 
-.table tbody tr:last-child td {
-  border-bottom: none;
+.table tbody tr:last-child td { border-bottom: none; }
+
+.table tbody tr:hover td {
+  background: color-mix(in oklab, var(--accent-soft) 22%, transparent);
 }
 
+/* ── Status pills ───────────────────────────────────────── */
 .pill {
-  display: inline-block;
-  border-radius: 999px;
-  padding: 3px 8px;
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--r-pill);
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 500;
   border: 1px solid var(--border);
   white-space: nowrap;
-}
-
-.pillPosted {
-  border-color: color-mix(in oklab, var(--accent) 28%, var(--border));
-  background: color-mix(in oklab, var(--accent) 10%, var(--panel));
-  color: color-mix(in oklab, var(--accent) 90%, var(--foreground));
-}
-
-.pillCompleted {
-  border-color: color-mix(in oklab, var(--success) 28%, var(--border));
-  background: color-mix(in oklab, var(--success) 10%, var(--panel));
-}
-
-.pillOther {
-  background: color-mix(in oklab, var(--panel) 90%, var(--foreground) 1%);
+  line-height: 1.6;
+  background: var(--neutral-soft);
   color: var(--muted);
 }
 
+.pillPosted    { background: var(--success-soft); border-color: color-mix(in oklab, var(--success) 22%, transparent); color: var(--success); }
+.pillCompleted { background: var(--accent-soft);  border-color: color-mix(in oklab, var(--accent) 22%, transparent);  color: var(--accent); }
+.pillOther     { background: var(--neutral-soft); color: var(--muted); }
+
+/* ── Actions ────────────────────────────────────────────── */
 .actions {
   display: flex;
   gap: 8px;
@@ -106,34 +112,33 @@
 
 .viewLink {
   font-size: 12px;
-  font-weight: 650;
-  color: color-mix(in oklab, var(--accent) 92%, var(--foreground));
+  font-weight: 500;
+  color: var(--accent);
+  transition: opacity 100ms ease;
 }
 
 .viewLink:hover {
+  opacity: 0.75;
   text-decoration: underline;
 }
 
 .cancelBtn {
-  border: 1px solid color-mix(in oklab, var(--danger) 22%, var(--border));
-  background: color-mix(in oklab, var(--danger) 8%, var(--panel));
-  color: color-mix(in oklab, var(--danger) 80%, var(--foreground));
-  border-radius: var(--radius-sm);
-  padding: 4px 10px;
+  background: var(--danger-soft);
+  border: 1px solid color-mix(in oklab, var(--danger) 22%, transparent);
+  color: var(--danger);
+  border-radius: var(--r-2);
+  padding: 5px 11px;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
+  transition: background 120ms ease;
 }
 
-.cancelBtn:hover {
-  background: color-mix(in oklab, var(--danger) 14%, var(--panel));
+.cancelBtn:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--danger) 16%, transparent);
 }
 
 .cancelBtn:disabled {
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
-}
-
-.table tbody tr:hover td {
-  background: color-mix(in oklab, var(--panel) 84%, var(--accent-weak));
 }
