@@ -54,7 +54,7 @@ export default async function AdminBalancePage() {
         </table>
       </div>
 
-      <div className={styles.subtitle} style={{ marginTop: 10 }}>
+      <div className={styles.tableNote}>
         Use this view to confirm daily balance and drill into staffing exceptions.
       </div>
     </div>
