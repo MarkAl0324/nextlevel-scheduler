@@ -1,16 +1,22 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import { getSwapBoardData } from "@/lib/serverData";
+import { StatusChip } from "@/app/_components/StatusChip";
 
-function formatMonthDay(isoDate: string) {
+function formatFullDate(isoDate: string) {
   const d = new Date(`${isoDate}T00:00:00`);
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(d);
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  }).format(d);
 }
 
 function formatRelative(createdAt: Date | string | null | undefined) {
   if (!createdAt) return null;
   const diff = Date.now() - new Date(createdAt).getTime();
   const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "just now";
   if (mins < 60) return `${mins}m ago`;
   const hours = Math.floor(mins / 60);
   if (hours < 24) return `${hours}h ago`;
@@ -24,10 +30,13 @@ function avatarInitials(name: string) {
   return name[0]?.toUpperCase() ?? "?";
 }
 
-function requestStatusLabel(status: string) {
-  if (status === "posted") return "Open";
-  if (status === "expired") return "Closed";
-  return status.replaceAll("-", " ");
+function CalendarIconSmall() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M8 3v3m8-3v3M4.5 9.5h15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <rect x="4" y="6" width="16" height="15" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  );
 }
 
 export default async function SwapBoardPage() {
@@ -49,7 +58,9 @@ export default async function SwapBoardPage() {
               <SwapCard key={p.id} post={p} />
             ))}
             {closedPosts.length > 0 && activePosts.length > 0 && (
-              <div style={{ height: 4 }} />
+              <div className={styles.sectionDivider} aria-hidden="true">
+                <span>Closed</span>
+              </div>
             )}
             {closedPosts.map((p) => (
               <SwapCard key={p.id} post={p} />
@@ -61,50 +72,56 @@ export default async function SwapBoardPage() {
   );
 }
 
-function SwapCard({ post }: { post: Awaited<ReturnType<typeof getSwapBoardData>>["posts"][0] }) {
-  const statusClass =
-    post.status === "posted"
-      ? `${styles.badge} ${styles.badgePosted}`
-      : `${styles.badge} ${styles.badgeExpired}`;
-  const statusLabel = requestStatusLabel(post.status);
-  const relativeTime = formatRelative((post as any).createdAt);
+function SwapCard({
+  post,
+}: {
+  post: Awaited<ReturnType<typeof getSwapBoardData>>["posts"][0];
+}) {
+  const relativeTime = formatRelative(post.createdAtIso);
+  const isOpen = post.status === "posted";
 
   return (
-    <div className={styles.card}>
-      <div className={styles.cardLeft}>
-        <div className={styles.avatarRow}>
-          <div className={styles.avatar} aria-hidden="true">
-            {avatarInitials(post.owner.name ?? "?")}
-          </div>
-          <span className={styles.primaryLine}>
-            {post.owner.name} &mdash; <strong>{formatMonthDay(post.targetDate)}</strong>
-          </span>
+    <article className={styles.card}>
+      {/* Header: avatar + name + posted time */}
+      <header className={styles.cardHeader}>
+        <div className={styles.avatar} aria-hidden="true">
+          {avatarInitials(post.owner.name ?? "?")}
         </div>
-        <div className={styles.metaLine}>
+        <div className={styles.cardHeaderText}>
+          <span className={styles.authorName}>{post.owner.name}</span>
           {relativeTime && (
-            <span className={styles.metaChip}>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
-                <path d="M12 7v5l3 3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              {relativeTime}
-            </span>
-          )}
-          {post.note && (
-            <span className={styles.note}>&ldquo;{post.note}&rdquo;</span>
+            <span className={styles.posted}>Posted {relativeTime}</span>
           )}
         </div>
+      </header>
+
+      {/* Shift block: date + provider in tinted panel */}
+      <div className={styles.shiftBlock}>
+        <div className={styles.shiftLabel}>
+          <CalendarIconSmall />
+          <span>Wants to swap out</span>
+        </div>
+        <div className={styles.shiftDate}>{formatFullDate(post.targetDate)}</div>
+        {post.provider && (
+          <div className={styles.shiftProviderRow}>
+            <span className={styles.shiftProviderDot} aria-hidden="true" />
+            <span className={styles.shiftProviderName}>{post.provider.name}</span>
+          </div>
+        )}
       </div>
 
-      <div className={styles.cardRight}>
-        <span className={statusClass}>
-          {post.status === "posted" && <span className={styles.liveDot} aria-hidden="true" />}
-          {statusLabel}
-        </span>
-        <Link className={styles.openBtn} href={`/requests/${post.id}`}>
-          View →
+      {/* Quoted reason */}
+      {post.note && (
+        <div className={styles.reason}>&ldquo;{post.note}&rdquo;</div>
+      )}
+
+      {/* Footer: status + action */}
+      <footer className={styles.cardFooter}>
+        <StatusChip status={post.status} size="md" />
+        <Link className={styles.proposeBtn} href={`/requests/${post.id}`}>
+          {isOpen ? "Propose →" : "View →"}
         </Link>
-      </div>
-    </div>
+      </footer>
+    </article>
   );
 }
