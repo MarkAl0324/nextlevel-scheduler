@@ -1,11 +1,11 @@
 /* ─────────────────────────────────────────────────────────────
- * Swap board — card marketplace layout
+ * Swap board — card marketplace layout (rich vertical cards)
  * ──────────────────────────────────────────────────────────── */
 
 /* ── Card list ──────────────────────────────────────────── */
 .list {
   display: grid;
-  gap: 10px;
+  gap: 12px;
 }
 
 /* Stagger fade-up */
@@ -22,17 +22,39 @@
   .list > * { animation: none !important; }
 }
 
+/* ── Section divider (between active and closed posts) ── */
+.sectionDivider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 -2px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.sectionDivider::before,
+.sectionDivider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--divider);
+}
+
 /* ── Card ───────────────────────────────────────────────── */
 .card {
   border: 1px solid var(--border);
   border-radius: var(--r-4);
-  padding: 14px 16px;
+  padding: 16px;
   background: var(--panel);
   display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  align-items: center;
+  flex-direction: column;
+  gap: 12px;
   box-shadow: var(--shadow-1);
+  position: relative;
+  overflow: hidden;
   transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
 }
 
@@ -42,117 +64,124 @@
   box-shadow: var(--shadow-2);
 }
 
-.cardLeft {
+/* ── Header (avatar + name + posted) ────────────────────── */
+.cardHeader {
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-  min-width: 0;
-}
-
-.cardRight {
-  display: flex;
+  align-items: center;
   gap: 10px;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-/* ── Card content ───────────────────────────────────────── */
-.avatarRow {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .avatar {
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: var(--accent);
   color: #fff;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.02em;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.primaryLine {
+.cardHeaderText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.authorName {
+  font-size: 13.5px;
   font-weight: 600;
-  font-size: 14px;
   color: var(--text-strong);
+  letter-spacing: -0.005em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.metaLine {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+.posted {
+  font-size: 11.5px;
+  color: var(--text-subtle);
 }
 
-.metaChip {
+/* ── Shift block (tinted sub-panel) ─────────────────────── */
+.shiftBlock {
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--bg-tint);
+  border: 1px solid var(--divider);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shiftLabel {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  color: var(--muted);
-  white-space: nowrap;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
 }
 
-.metaChip svg {
-  flex-shrink: 0;
+.shiftLabel svg {
   opacity: 0.7;
 }
 
-.note {
-  font-size: 12px;
-  color: var(--muted);
-  font-style: italic;
-  margin-top: 1px;
+.shiftDate {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-strong);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
 }
 
-/* ── Status badges ──────────────────────────────────────── */
-.badge {
-  display: inline-flex;
+.shiftProviderRow {
+  display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 11px;
-  font-weight: 500;
-  padding: 3px 9px;
-  border-radius: var(--r-pill);
-  border: 1px solid var(--border);
-  background: var(--neutral-soft);
-  color: var(--muted);
-  white-space: nowrap;
-  line-height: 1.6;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--text);
 }
 
-.badgePosted {
-  background: var(--success-soft);
-  border-color: color-mix(in oklab, var(--success) 24%, transparent);
-  color: var(--success);
-}
-
-.badgeExpired {
-  background: var(--neutral-soft);
-  border-color: var(--border-strong);
-  color: var(--muted);
-}
-
-.liveDot {
-  width: 5px;
-  height: 5px;
+.shiftProviderDot {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: currentColor;
+  background: var(--accent);
   flex-shrink: 0;
-  animation: nls-dot-pulse 2.4s ease-in-out infinite;
+  opacity: 0.85;
 }
 
-/* ── Open button ────────────────────────────────────────── */
-.openBtn {
+.shiftProviderName {
+  font-weight: 500;
+}
+
+/* ── Quoted reason ──────────────────────────────────────── */
+.reason {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* ── Footer (status + propose button) ───────────────────── */
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.proposeBtn {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -161,15 +190,16 @@
   padding: 7px 13px;
   border-radius: var(--r-3);
   background: var(--accent-soft);
-  border: 1px solid color-mix(in oklab, var(--accent) 20%, transparent);
+  border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
   color: var(--accent);
-  transition: background 120ms ease, box-shadow 120ms ease, transform 100ms ease;
+  text-decoration: none;
   white-space: nowrap;
+  transition: background 120ms ease, box-shadow 120ms ease, transform 100ms ease;
 }
 
-.openBtn:hover {
-  background: color-mix(in oklab, var(--accent) 14%, transparent);
-  box-shadow: 0 2px 8px color-mix(in oklab, var(--accent) 18%, transparent);
+.proposeBtn:hover {
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  box-shadow: 0 2px 8px color-mix(in oklab, var(--accent) 20%, transparent);
   transform: translateY(-1px);
 }
 
@@ -189,4 +219,10 @@
   font-size: 16px;
   color: var(--text);
   margin-bottom: 6px;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .card { padding: 14px; }
+  .shiftDate { font-size: 15px; }
 }
