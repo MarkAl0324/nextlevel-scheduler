@@ -344,7 +344,10 @@ export async function getSwapBoardData() {
   try {
     const posts = await prisma.swapPost.findMany({
       orderBy: { createdAt: "desc" },
-      include: { ownerEmployee: true, targetAssignment: true },
+      include: {
+        ownerEmployee: true,
+        targetAssignment: { include: { provider: true } },
+      },
       take: 50,
     });
     return {
@@ -353,6 +356,9 @@ export async function getSwapBoardData() {
         owner: { id: p.ownerEmployeeId, name: p.ownerEmployee.name },
         ownerEmployeeId: p.ownerEmployeeId,
         targetDate: toIsoDateUTC(p.targetAssignment.date),
+        provider: p.targetAssignment.provider
+          ? { id: p.targetAssignment.provider.id, name: p.targetAssignment.provider.name }
+          : null,
         note: p.note ?? undefined,
         status: p.status,
         createdAtIso: p.createdAt.toISOString(),
